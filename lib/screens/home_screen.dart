@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'game_screen.dart';
+import 'emosi_sosial_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -31,10 +32,7 @@ class HomeScreen extends StatelessWidget {
                         'assets/images/home/ProfilePictureHomepage.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.person,
-                            color: Colors.blue,
-                          );
+                          return const Icon(Icons.person, color: Colors.blue);
                         },
                       ),
                     ),
@@ -45,9 +43,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Halo, Teman!',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium
+                        style: Theme.of(context).textTheme.headlineMedium
                             ?.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -56,13 +52,10 @@ class HomeScreen extends StatelessWidget {
                       ),
                       Text(
                         'Ayo kita bermain',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(
-                              fontSize: 13,
-                              color: const Color(0xFF666666),
-                            ),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 13,
+                          color: const Color(0xFF666666),
+                        ),
                       ),
                     ],
                   ),
@@ -78,9 +71,9 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 'Pilih Petualanganmu',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
             ),
 
@@ -151,13 +144,21 @@ class HomeScreen extends StatelessWidget {
   }) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => GameScreen(category: title),
-          ),
-        );
+        if (title == "Emosi & Sosial") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const EmosiSosialScreen()),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GameScreen(category: title),
+            ),
+          );
+        }
       },
+
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
