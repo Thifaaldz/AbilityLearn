@@ -8,17 +8,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFD3E1EC), // Light blue-gray background
+      backgroundColor: const Color(0xFFD3E1EC),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header section - no background color
+            // HEADER
             Padding(
               padding: const EdgeInsets.all(20),
               child: Row(
                 children: [
-                  // Avatar/mascot image
                   Container(
                     width: 48,
                     height: 48,
@@ -32,12 +31,9 @@ class HomeScreen extends StatelessWidget {
                         'assets/images/home/ProfilePictureHomepage.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.blue,
-                              size: 28,
-                            ),
+                          return const Icon(
+                            Icons.person,
+                            color: Colors.blue,
                           );
                         },
                       ),
@@ -49,19 +45,24 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Halo, Teman!',
-                        style: Theme.of(context).textTheme.headlineMedium
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
                             ?.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF333333), // Dark text
+                              color: const Color(0xFF333333),
                             ),
                       ),
                       Text(
                         'Ayo kita bermain',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF666666), // Gray text
-                          fontSize: 13,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(
+                              fontSize: 13,
+                              color: const Color(0xFF666666),
+                            ),
                       ),
                     ],
                   ),
@@ -71,21 +72,21 @@ class HomeScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Category section title
+            // TITLE
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 'Pilih Petualanganmu',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
               ),
             ),
 
             const SizedBox(height: 16),
 
-            // Category cards
+            // CATEGORY LIST
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -96,16 +97,38 @@ class HomeScreen extends StatelessWidget {
                       imagePath: 'assets/images/home/teethimage.png',
                       title: 'Kemandirian Diri',
                       subtitle: 'Belajar merawat diri sendiri',
-                      color: AppTheme.categoryBlue,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const GameScreen(category: 'Kemandirian Diri'),
-                          ),
-                        );
-                      },
+                      color: const Color(0xFFFFD93D),
+                      iconPath: 'assets/images/home/Brush.png',
+                    ),
+                    const SizedBox(height: 20),
+
+                    _buildCategoryCard(
+                      context,
+                      imagePath: 'assets/images/home/homeimage.png',
+                      title: 'Kenal Sekitarku',
+                      subtitle: 'Eksplorasi lingkungan rumah',
+                      color: const Color(0xFF6CCF8E),
+                      iconPath: 'assets/images/home/HomeIcon.png',
+                    ),
+                    const SizedBox(height: 20),
+
+                    _buildCategoryCard(
+                      context,
+                      imagePath: 'assets/images/home/heartimage.png',
+                      title: 'Emosi & Sosial',
+                      subtitle: 'Kenali perasaan teman-teman',
+                      color: const Color(0xFFFF6F6F),
+                      iconPath: 'assets/images/home/SmileIcon.png',
+                    ),
+                    const SizedBox(height: 20),
+
+                    _buildCategoryCard(
+                      context,
+                      imagePath: 'assets/images/home/starimage.png',
+                      title: 'Tanggung Jawab',
+                      subtitle: 'Belajar menyelesaikan tugas',
+                      color: const Color(0xFF5A9BFF),
+                      iconPath: 'assets/images/home/StarIcon.png',
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -124,18 +147,25 @@ class HomeScreen extends StatelessWidget {
     required String title,
     required String subtitle,
     required Color color,
-    required VoidCallback onTap,
+    required String iconPath,
   }) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GameScreen(category: title),
+          ),
+        );
+      },
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: const Color(0xFFFFD93D), // Yellow background
+          color: color,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFFFD93D).withValues(alpha: 0.3),
+              color: color.withValues(alpha: 0.3),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -143,20 +173,19 @@ class HomeScreen extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            // Brush icon - top left
+            // ICON LEFT
             Positioned(
               top: 0,
               left: 0,
               child: Image.asset(
-                'assets/images/home/Brush.png',
-                width: 48,
-                height: 48,
-                errorBuilder: (context, error, stackTrace) {
-                  return const SizedBox.shrink();
-                },
+                iconPath,
+                width: 40,
+                height: 40,
+                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
               ),
             ),
-            // Teal image container - top right
+
+            // IMAGE RIGHT
             Positioned(
               top: 0,
               right: 0,
@@ -164,7 +193,7 @@ class HomeScreen extends StatelessWidget {
                 width: 72,
                 height: 72,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF5BB5B0), // Teal color
+                  color: Colors.white.withValues(alpha: 0.25),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: ClipRRect(
@@ -172,26 +201,24 @@ class HomeScreen extends StatelessWidget {
                   child: Image.asset(
                     imagePath,
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Center(
-                        child: Icon(
-                          _getIconForCategory(title),
-                          size: 36,
-                          color: Colors.white,
-                        ),
+                    errorBuilder: (_, __, ___) {
+                      return const Icon(
+                        Icons.image,
+                        color: Colors.white,
+                        size: 36,
                       );
                     },
                   ),
                 ),
               ),
             ),
-            // Text at bottom
+
+            // TEXT
             Padding(
               padding: const EdgeInsets.only(top: 80),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title - italic style
                   Text(
                     title,
                     style: const TextStyle(
@@ -202,7 +229,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  // Subtitle
                   Text(
                     subtitle,
                     style: TextStyle(
@@ -218,20 +244,5 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  IconData _getIconForCategory(String title) {
-    switch (title) {
-      case 'Kemandirian Diri':
-        return Icons.person_outline;
-      case 'Kenali Sekitarmu':
-        return Icons.explore_outlined;
-      case 'Emosi & Sosial':
-        return Icons.favorite_outline;
-      case 'Tanggung Jawab':
-        return Icons.star_outline;
-      default:
-        return Icons.category_outlined;
-    }
   }
 }
