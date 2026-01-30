@@ -12,7 +12,7 @@ class GameItems {
   static const toothbrush = SelectableItem(
     id: 'toothbrush',
     name: 'Sikat Gigi',
-    imagePath: 'assets/images/items/toothbrush.png',
+    imagePath: 'assets/images/items/Toothbrush.png',
   );
   static const toothpaste = SelectableItem(
     id: 'toothpaste',
@@ -22,7 +22,7 @@ class GameItems {
   static const soap = SelectableItem(
     id: 'soap',
     name: 'Sabun',
-    imagePath: 'assets/images/items/soap.png',
+    imagePath: 'assets/images/items/Soap.png',
   );
   static const shampoo = SelectableItem(
     id: 'shampoo',

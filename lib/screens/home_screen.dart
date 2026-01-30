@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'game_screen.dart';
 import 'kenal_sekitarku_screen.dart';
+import 'emosi_sosial_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -31,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                       child: Image.asset(
                         'assets/images/home/ProfilePictureHomepage.png',
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) {
+                        errorBuilder: (context, error, stackTrace) {
                           return const Icon(
                             Icons.person,
                             color: Colors.blue,
@@ -57,13 +58,11 @@ class HomeScreen extends StatelessWidget {
                       ),
                       Text(
                         'Ayo kita bermain',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(
-                              fontSize: 13,
-                              color: const Color(0xFF666666),
-                            ),
+                        style:
+                            Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  fontSize: 13,
+                                  color: const Color(0xFF666666),
+                                ),
                       ),
                     ],
                   ),
@@ -93,7 +92,6 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListView(
                   children: [
-                    // KEMANDIRIAN DIRI
                     _buildCategoryCard(
                       context,
                       imagePath: 'assets/images/home/teethimage.png',
@@ -113,10 +111,9 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    // KENAL SEKITARKU (DIPERBARUI)
                     _buildCategoryCard(
                       context,
-                      imagePath: 'assets/images/home/homeimage.png',
+                      imagePath: 'assets/images/home/home.png',
                       title: 'Kenal Sekitarku',
                       subtitle: 'Eksplorasi lingkungan rumah',
                       color: const Color(0xFF6CCF8E),
@@ -132,31 +129,32 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    // EMOSI & SOSIAL
                     _buildCategoryCard(
                       context,
-                      imagePath: 'assets/images/home/heartimage.png',
+                      imagePath: 'assets/images/home/emosi.png',
                       title: 'Emosi & Sosial',
                       subtitle: 'Kenali perasaan teman-teman',
                       color: const Color(0xFFFF6F6F),
                       iconPath: 'assets/images/home/SmileIcon.png',
                       onTap: () {
-                        // nanti arahkan ke screen khusus emosi & sosial
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const EmosiSosialScreen(),
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(height: 20),
 
-                    // TANGGUNG JAWAB
                     _buildCategoryCard(
                       context,
-                      imagePath: 'assets/images/home/starimage.png',
+                      imagePath: 'assets/images/home/star.png',
                       title: 'Tanggung Jawab',
                       subtitle: 'Belajar menyelesaikan tugas',
                       color: const Color(0xFF5A9BFF),
                       iconPath: 'assets/images/home/StarIcon.png',
-                      onTap: () {
-                        // nanti arahkan ke screen tanggung jawab
-                      },
+                      onTap: () {},
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -223,7 +221,7 @@ class HomeScreen extends StatelessWidget {
                   child: Image.asset(
                     imagePath,
                     fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) {
+                    errorBuilder: (context, error, stackTrace) {
                       return const Icon(
                         Icons.image,
                         color: Colors.white,
