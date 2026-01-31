@@ -84,22 +84,127 @@ flutter build ios --release
 ## Project Structure
 
 ```
-lib/
-├── main.dart                 # App entry point
-├── screens/                  # Main application screens
-│   ├── splash_screen.dart
-│   ├── home_screen.dart
-│   ├── game_screen.dart
-│   └── ...
-├── widgets/                  # Reusable UI components
-├── models/                   # Data models
-├── data/                     # Static data and configurations
-├── theme/                    # App theming
-└── modul4/                   # Modular features (games)
-
-assets/
-├── images/                   # Image assets
-└── audio/                    # Audio files
+ability_learn/
+├── .gitignore                    # Git ignore rules
+├── .metadata                     # Flutter project metadata
+├── analysis_options.yaml         # Dart analysis configuration
+├── pubspec.yaml                  # Flutter project dependencies and configuration
+├── pubspec.lock                  # Lockfile for dependencies
+├── README.md                     # Project documentation
+├── TODO.md                       # Development tasks and notes
+├── android/                      # Android platform-specific code
+│   ├── .gitignore
+│   ├── build.gradle.kts          # Android build configuration
+│   ├── gradle.properties         # Gradle properties
+│   ├── settings.gradle.kts       # Gradle settings
+│   ├── app/
+│   │   ├── build.gradle.kts      # App-level build configuration
+│   │   └── src/                  # Android source code
+│   ├── build/                    # Build outputs
+│   ├── gradle/                   # Gradle wrapper
+│   └── gradle.properties
+├── assets/                       # Static assets
+│   ├── audio/                    # Audio files
+│   │   ├── background music.mp3
+│   │   ├── correct.mp3
+│   │   ├── result.mp3
+│   │   └── wrong.mp3
+│   └── images/                   # Image assets
+│       ├── banner_aku_anak_hebat.png
+│       ├── bowl_blue.png
+│       ├── bowl_red.png
+│       ├── btn_buang_sampah.png
+│       ├── btn_memberi_makan.png
+│       ├── btn_rapikan_mainan.png
+│       ├── cat_food.png
+│       ├── cat.png
+│       ├── cloud.png
+│       ├── milk.png
+│       ├── toy_ball.png
+│       ├── toy_box.png
+│       ├── toy_car.png
+│       ├── toy_duck.png
+│       ├── toy_gamepad.png
+│       ├── trash_apple.png
+│       ├── trash_bin_character.png
+│       ├── trash_can.png
+│       ├── trash_egg.png
+│       ├── tree.png
+│       ├── home/                 # Home screen images
+│       ├── icons/                # Icon assets
+│       ├── items/                # Item images (clothing, etc.)
+│       ├── modul3/               # Module 3 specific images
+│       └── questions/            # Quiz question images
+├── build/                        # Flutter build outputs
+├── ios/                          # iOS platform-specific code
+│   ├── .gitignore
+│   ├── Flutter/                  # Flutter iOS integration
+│   ├── Runner/                   # iOS app runner
+│   ├── Runner.xcodeproj/         # Xcode project files
+│   ├── Runner.xcworkspace/       # Xcode workspace
+│   └── RunnerTests/              # iOS unit tests
+├── lib/                          # Main Flutter application code
+│   ├── main.dart                 # App entry point
+│   ├── data/                     # Static data and configurations
+│   │   ├── game_items.dart       # Game item data
+│   │   ├── quiz_data.dart        # Quiz questions and data
+│   │   └── quiz_data_kenal_sekitarku.dart
+│   ├── models/                   # Data models
+│   │   ├── quiz_item.dart        # Quiz item model
+│   │   ├── quiz_item_kenal_sekitarku.dart
+│   │   └── selectable_item.dart  # Selectable item model
+│   ├── modul4/                   # Module 4 features
+│   │   ├── core/                 # Core utilities for module 4
+│   │   ├── features/             # Feature-specific code
+│   │   │   ├── feed_animals/     # Feed animals mini-game
+│   │   │   │   └── presentation/
+│   │   │   │       └── screens/
+│   │   │   │           └── feed_animals_screen.dart
+│   │   │   ├── home/             # Home feature for module 4
+│   │   │   │   └── widgets/
+│   │   │   │       └── home_menu_card.dart
+│   │   │   └── tidy_toys/        # Tidy toys mini-game
+│   │   │       └── presentation/
+│   │   │           └── screens/
+│   │   │               └── tidy_toys_screen.dart
+│   │   └── utils/                # Utility functions for module 4
+│   ├── screens/                  # Main application screens
+│   │   ├── emosi_sosial_screen.dart
+│   │   ├── game_kenal_sekitarku_screen.dart
+│   │   ├── game_screen.dart
+│   │   ├── home_screen.dart
+│   │   ├── kenal_sekitarku_screen.dart
+│   │   ├── result_screen.dart
+│   │   └── splash_screen.dart
+│   ├── theme/                    # App theming
+│   │   └── app_theme.dart        # Application theme configuration
+│   └── widgets/                  # Reusable UI components
+│       ├── feedback_modal.dart   # Feedback modal widget
+│       └── item_card.dart        # Item card widget
+├── linux/                        # Linux platform-specific code
+│   ├── .gitignore
+│   ├── CMakeLists.txt
+│   ├── flutter/
+│   └── runner/
+├── macos/                        # macOS platform-specific code
+│   ├── .gitignore
+│   ├── Flutter/
+│   ├── Runner/
+│   ├── Runner.xcodeproj/
+│   ├── Runner.xcworkspace/
+│   └── RunnerTests/
+├── test/                         # Unit and widget tests
+│   └── widget_test.dart          # Basic widget test
+├── web/                          # Web platform-specific code
+│   ├── favicon.png
+│   ├── index.html
+│   ├── manifest.json
+│   └── icons/
+└── windows/                      # Windows platform-specific code
+    ├── .gitignore
+    ├── CMakeLists.txt
+    ├── flutter/
+    └── runner/
 ```
 
 ## Dependencies
