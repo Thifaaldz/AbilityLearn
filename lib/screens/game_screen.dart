@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:provider/provider.dart';
 
 import '../data/quiz_data.dart';
+import '../providers/audio_provider.dart';
 import '../data/game_items.dart';
 import '../models/quiz_item.dart';
 import '../theme/app_theme.dart';
@@ -43,6 +45,9 @@ class _GameScreenState extends State<GameScreen> {
     _questions = List.from(quizData);
     _initTts();
     _playBackgroundMusic();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioProvider>().stopHomeBackgroundMusic();
+    });
   }
 
   @override

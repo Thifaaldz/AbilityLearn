@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:provider/provider.dart';
 import '../data/game_items.dart';
 import '../data/quiz_data_kenal_sekitarku.dart';
 import '../models/quiz_item_kenal_sekitarku.dart';
 import '../theme/app_theme.dart';
 import '../widgets/feedback_modal.dart';
+import '../providers/audio_provider.dart';
 import 'result_screen.dart';
 
 class GameKenalSekitarkuScreen extends StatefulWidget {
@@ -43,6 +45,9 @@ class _GameKenalSekitarkuScreenState
     _questions = quizKenalSekitarkuByRoom[widget.roomName] ?? [];
     _initTts().then((_) {
       _playBackgroundMusic();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioProvider>().stopHomeBackgroundMusic();
     });
   }
 

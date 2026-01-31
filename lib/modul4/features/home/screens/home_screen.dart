@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import '../widgets/home_menu_card.dart';
 import '../../tidy_toys/presentation/screens/tidy_toys_screen.dart';
 import '../../trash_game/presentation/screens/trash_game_screen.dart';
 import '../../feed_animals/presentation/screens/feed_animals_screen.dart';
+import 'package:ability_learn/providers/audio_provider.dart';
 
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -23,6 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
     flutterTts = FlutterTts();
     flutterTts.setLanguage("id-ID");
     _playWelcomeMessage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioProvider>().playHomeBackgroundMusic();
+    });
   }
 
   Future<void> _playWelcomeMessage() async {

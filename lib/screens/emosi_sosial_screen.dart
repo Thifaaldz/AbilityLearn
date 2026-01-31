@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'result_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import '../providers/audio_provider.dart';
 
 class EmosiSosialScreen extends StatefulWidget {
   const EmosiSosialScreen({super.key});
@@ -40,6 +42,9 @@ class _EmosiSosialScreenState extends State<EmosiSosialScreen> {
       // Auto-play TTS for the instruction when screen loads
       _speakInstruction();
       _playBackgroundMusic();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioProvider>().stopHomeBackgroundMusic();
     });
   }
 

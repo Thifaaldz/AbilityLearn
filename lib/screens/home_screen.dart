@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
+import '../providers/audio_provider.dart';
 import 'game_screen.dart';
 import 'kenal_sekitarku_screen.dart';
 import 'emosi_sosial_screen.dart';
 import '../modul4/features/home/screens/home_screen.dart' as Modul4HomeScreen;
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioProvider>().playHomeBackgroundMusic();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +116,7 @@ class HomeScreen extends StatelessWidget {
                       color: const Color(0xFFFFD93D),
                       iconPath: 'assets/images/home/Brush.png',
                       onTap: () {
+                        context.read<AudioProvider>().stopHomeBackgroundMusic();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -120,6 +136,7 @@ class HomeScreen extends StatelessWidget {
                       color: const Color(0xFF6CCF8E),
                       iconPath: 'assets/images/home/home.png',
                       onTap: () {
+                        // Don't stop music here as it continues to KenalSekitarkuScreen
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -138,6 +155,7 @@ class HomeScreen extends StatelessWidget {
                       color: const Color(0xFFFF6F6F),
                       iconPath: 'assets/images/home/SmileIcon.png',
                       onTap: () {
+                        context.read<AudioProvider>().stopHomeBackgroundMusic();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -156,6 +174,7 @@ class HomeScreen extends StatelessWidget {
                       color: const Color(0xFF5A9BFF),
                       iconPath: 'assets/images/home/StarIcon.png',
                       onTap: () {
+                        // Don't stop music here as it continues to Modul4HomeScreen
                         Navigator.push(
                           context,
                           MaterialPageRoute(

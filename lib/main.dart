@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'theme/app_theme.dart';
 import 'screens/splash_screen.dart';
+import 'providers/audio_provider.dart';
 
 void main() {
-  runApp(const AkuBisaMerawatDiriku());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AudioProvider()),
+      ],
+      child: const AkuBisaMerawatDiriku(),
+    ),
+  );
 }
 
 class AkuBisaMerawatDiriku extends StatelessWidget {

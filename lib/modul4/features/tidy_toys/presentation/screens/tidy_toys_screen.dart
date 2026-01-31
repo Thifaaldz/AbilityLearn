@@ -8,6 +8,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/game_layout.dart';
 import '../providers/tidy_toys_provider.dart';
 import '../../data/models/toy_item.dart';
+import 'package:ability_learn/providers/audio_provider.dart';
 
 import 'package:lottie/lottie.dart';
 import '../../../../core/widgets/hint_animator.dart';
@@ -36,6 +37,9 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
     flutterTts.setLanguage("id-ID");
     flutterTts.speak("Ayo masukkan mainan ke kotak!");
     _startIdleTimer();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioProvider>().stopHomeBackgroundMusic();
+    });
   }
 
   @override

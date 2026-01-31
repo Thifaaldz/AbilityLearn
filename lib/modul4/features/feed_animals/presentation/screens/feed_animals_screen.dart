@@ -8,6 +8,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/game_layout.dart';
 import '../providers/feed_animals_provider.dart';
 import '../../data/models/food_item.dart';
+import 'package:ability_learn/providers/audio_provider.dart';
 
 import 'package:lottie/lottie.dart';
 import '../../../../core/widgets/hint_animator.dart';
@@ -38,6 +39,9 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
     flutterTts.speak("Geser makanan atau minuman ke mangkuk yang benar!");
     _playBackgroundMusic();
     _startIdleTimer();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioProvider>().stopHomeBackgroundMusic();
+    });
   }
 
   @override

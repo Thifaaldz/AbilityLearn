@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/kenal_sekitarku_room_button.dart';
+import '../providers/audio_provider.dart';
 import 'game_kenal_sekitarku_screen.dart';
 
-class KenalSekitarkuScreen extends StatelessWidget {
+class KenalSekitarkuScreen extends StatefulWidget {
   const KenalSekitarkuScreen({super.key});
+
+  @override
+  State<KenalSekitarkuScreen> createState() => _KenalSekitarkuScreenState();
+}
+
+class _KenalSekitarkuScreenState extends State<KenalSekitarkuScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioProvider>().playHomeBackgroundMusic();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
