@@ -4,6 +4,7 @@ import 'result_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import '../providers/audio_provider.dart';
+import '../widgets/feedback_modal.dart';
 
 class EmosiSosialScreen extends StatefulWidget {
   const EmosiSosialScreen({super.key});
@@ -111,9 +112,10 @@ class _EmosiSosialScreenState extends State<EmosiSosialScreen> {
   ];
 
   // ==========================
-  // TAMBAHAN: biar popup ga ke-trigger berkali-kali
+  // FEEDBACK STATE
   // ==========================
-  bool isDialogOpen = false;
+  bool _showFeedback = false;
+  bool _isCorrect = false;
 
   // ==========================
   // fungsi lanjut (benar)
@@ -121,6 +123,7 @@ class _EmosiSosialScreenState extends State<EmosiSosialScreen> {
   void goNext() {
     setState(() {
       selectedEmotion = '';
+      _showFeedback = false;
 
       if (currentIndex < questions.length - 1) {
         currentIndex++;
@@ -146,308 +149,13 @@ class _EmosiSosialScreenState extends State<EmosiSosialScreen> {
   void tryAgain() {
     setState(() {
       selectedEmotion = '';
+      _showFeedback = false;
     });
   }
 
-  // ==========================
-  // POPUP BENAR
-  // ==========================
-  void showCorrectPopup() {
-    if (isDialogOpen) return;
-    isDialogOpen = true;
-    playSound("assets/audio/jawabansalah.mp3");
-    playSound("assets/audio/benar.mp3");
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: const Color(0xFFE9FFF2),
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: const Color(0xFF6CCF8E).withOpacity(0.6),
-                width: 1.2,
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF6CCF8E).withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.check_circle,
-                    size: 38,
-                    color: Color(0xFF2EAD63),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  "Jawaban Benar!",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xFF2EAD63),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  "Kamu hebat! Ini adalah emosi\n${questions[currentIndex]["correct"]}.",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    height: 1.3,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF333333),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  height: 46,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pop(context); // tutup popup
-                      isDialogOpen = false;
-                      goNext(); // lanjut
-                    },
-                    icon: const Icon(Icons.arrow_forward),
-                    label: const Text(
-                      "Lanjut",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF6CCF8E),
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    ).then((_) {
-      isDialogOpen = false;
-    });
-  }
 
-  // ==========================
-  // POPUP SALAH
-  // ==========================
-  void showWrongPopup() {
-    if (isDialogOpen) return;
-    isDialogOpen = true;
 
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFF3C7),
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: const Color(0xFFFF9F1C).withOpacity(0.6),
-                width: 1.2,
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF9F1C).withOpacity(0.25),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.cancel,
-                    size: 38,
-                    color: Color(0xFFE53935),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  "Jawaban Salah!",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xFFE53935),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  "Yuk coba lagi ya!\nPerhatikan ekspresinya 😊",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    height: 1.3,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF333333),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  height: 46,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pop(context); // tutup popup
-                      isDialogOpen = false;
-                      tryAgain(); // reset pilihan
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text(
-                      "Coba Lagi",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFF9F1C),
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    ).then((_) {
-      isDialogOpen = false;
-    });
-  }
 
-  // ==========================
-  // TAMBAHAN: POPUP SELESAI
-  // ==========================
-  void showFinishPopup() {
-    if (isDialogOpen) return;
-    isDialogOpen = true;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: const Color(0xFFEAF2FF),
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: const Color(0xFF4A90E2).withOpacity(0.6),
-                width: 1.2,
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF4A90E2).withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.emoji_events,
-                    size: 38,
-                    color: Color(0xFF2D6CDF),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  "Selesai 🎉",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xFF2D6CDF),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  "Kamu sudah menyelesaikan semua soal\nEmosi & Sosial!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    height: 1.3,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF333333),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  height: 46,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      isDialogOpen = false;
-
-                      // setelah selesai, balik halaman sebelumnya
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.home),
-                    label: const Text(
-                      "Kembali",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4A90E2),
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    ).then((_) {
-      isDialogOpen = false;
-    });
-  }
 
   // ==========================
   // fungsi cek jawaban
@@ -461,10 +169,12 @@ class _EmosiSosialScreenState extends State<EmosiSosialScreen> {
 
     if (correct) {
       stars++; // ⭐ tambah bintang kalau benar
-      showCorrectPopup();
-    } else {
-      showWrongPopup();
     }
+
+    setState(() {
+      _isCorrect = correct;
+      _showFeedback = true;
+    });
   }
 
   @override
@@ -474,206 +184,219 @@ class _EmosiSosialScreenState extends State<EmosiSosialScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFD3E1EC),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            // ===== TOP HEADER =====
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Row(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back_ios_new),
+                  // ===== TOP HEADER =====
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.arrow_back_ios_new),
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              "Emosi & Sosial",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFF8A8A8A),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              "Aku Mengerti Perasaan",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF222222),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.home, color: Color(0xFFF28C28)),
+                    ],
                   ),
-                  const SizedBox(width: 4),
+
+                  const SizedBox(height: 8),
+
+                  // ===== PROGRESS =====
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Kemajuan Belajar",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF8A8A8A),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        "$currentStep/$totalStep",
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF8A8A8A),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      minHeight: 10,
+                      backgroundColor: Colors.grey[300],
+                      valueColor: const AlwaysStoppedAnimation(
+                        Color(0xFFFF9F1C),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // ===== QUESTION TEXT =====
+                  const Text(
+                    "Coba tebak, dia sedang merasa apa?",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // ===== LISTEN BUTTON =====
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        if (_ttsInitialized) {
+                          await _flutterTts.speak("Coba tebak, dia sedang merasa apa?");
+                        }
+                      },
+                      icon: const Icon(Icons.volume_up),
+                      label: const Text('Dengarkan Instruksi'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF9F1C),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // ===== IMAGE CARD =====
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Emosi & Sosial",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF8A8A8A),
-                            fontWeight: FontWeight.w500,
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.55),
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Image.asset(
+                            questions[currentIndex]["image"],
+                            height: 220,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Icon(
+                                    Icons.image_not_supported,
+                                    size: 60,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    "Gambar belum ada",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ),
-                        SizedBox(height: 4),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // ===== OPTIONS BUTTONS =====
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: options.map((item) {
+                      final bool isSelected = selectedEmotion == item["label"];
+
+                      return _EmotionOptionButton(
+                        label: item["label"]!,
+                        emoji: item["emoji"]!,
+                        selected: isSelected,
+                        onTap: () {
+                          checkAnswer(item["label"]!);
+                        },
+                      );
+                    }).toList(),
+                  ),
+
+                  // ===== HELPER TEXT =====
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: const [
+                        Icon(Icons.pets, color: Colors.orange),
+                        SizedBox(width: 8),
                         Text(
-                          "Aku Mengerti Perasaan",
+                          'Yuk, pilih jawaban yang benar!',
                           style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF222222),
+                            color: Colors.lightBlue,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.home, color: Color(0xFFF28C28)),
                 ],
               ),
             ),
 
-            // ===== PROGRESS =====
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Kemajuan Belajar",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF8A8A8A),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    "$currentStep/$totalStep",
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF8A8A8A),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
+            // ===== FEEDBACK MODAL =====
+            if (_showFeedback)
+              FeedbackModal(
+                isCorrect: _isCorrect,
+                instruction: "Coba tebak, dia sedang merasa apa?",
+                category: "Emosi & Sosial",
+                onContinue: goNext,
               ),
-            ),
-            const SizedBox(height: 8),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(999),
-                child: LinearProgressIndicator(
-                  value: progress,
-                  minHeight: 10,
-                  backgroundColor: Colors.white,
-                  valueColor: const AlwaysStoppedAnimation(Color(0xFFFF9F1C)),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 18),
-
-            // ===== QUESTION TEXT =====
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Coba tebak, dia sedang merasa apa?",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF333333),
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 14),
-
-            // ===== LISTEN BUTTON =====
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    if (_ttsInitialized) {
-                      await _flutterTts.speak("Coba tebak, dia sedang merasa apa?");
-                    }
-                  },
-
-                  icon: const Icon(Icons.volume_up_rounded),
-                  label: const Text(
-                    "Dengarkan Instruksi",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFF9F1C),
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 18),
-
-            // ===== IMAGE CARD =====
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 22),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.55),
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Image.asset(
-                        questions[currentIndex]["image"],
-                        height: 220,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(
-                                Icons.image_not_supported,
-                                size: 60,
-                                color: Colors.grey,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Gambar belum ada",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // ===== OPTIONS BUTTONS =====
-            Padding(
-              padding: const EdgeInsets.only(left: 22, right: 22, bottom: 18),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: options.map((item) {
-                  final bool isSelected = selectedEmotion == item["label"];
-
-                  return _EmotionOptionButton(
-                    label: item["label"]!,
-                    emoji: item["emoji"]!,
-                    selected: isSelected,
-                    onTap: () {
-                      checkAnswer(item["label"]!);
-                    },
-                  );
-                }).toList(),
-              ),
-            ),
           ],
         ),
       ),
