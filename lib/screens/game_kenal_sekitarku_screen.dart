@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import '../data/game_items.dart';
 import '../data/quiz_data_kenal_sekitarku.dart';
 import '../models/quiz_item_kenal_sekitarku.dart';
@@ -23,17 +25,61 @@ class _GameKenalSekitarkuScreenState
     extends State<GameKenalSekitarkuScreen> {
 
   late List<QuizKenalSekitarku> _questions;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _backgroundPlayer = AudioPlayer();
+  final FlutterTts _flutterTts = FlutterTts();
 
   int _index = 0;
   int _stars = 0;
 
   bool _showFeedback = false;
   bool _isCorrect = false;
+  bool _audioPlayed = false;
+  bool _ttsInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _questions = quizKenalSekitarkuByRoom[widget.roomName] ?? [];
+    _initTts().then((_) {
+      _playBackgroundMusic();
+    });
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    _flutterTts.stop();
+    super.dispose();
+  }
+
+  Future<void> _initTts() async {
+    try {
+      // Try Indonesian first
+      var languages = await _flutterTts.getLanguages;
+      if (languages.contains("id-ID")) {
+        await _flutterTts.setLanguage("id-ID");
+      } else if (languages.contains("en-US")) {
+        await _flutterTts.setLanguage("en-US"); // Fallback to English
+      }
+      await _flutterTts.setSpeechRate(0.5);
+      await _flutterTts.setVolume(1.0);
+      await _flutterTts.setPitch(1.0);
+      _ttsInitialized = true;
+    } catch (e) {
+      print("TTS initialization error: $e");
+      _ttsInitialized = false;
+    }
+  }
+
+  void _playBackgroundMusic() async {
+    try {
+      await _backgroundPlayer.setVolume(0.3); // Lower volume for background music
+      await _backgroundPlayer.setReleaseMode(ReleaseMode.loop);
+      await _backgroundPlayer.play(AssetSource('audio/background music.mp3'));
+    } catch (e) {
+      print("Error playing background music: $e");
+    }
   }
 
   void _selectAnswer(String selected) {
@@ -51,6 +97,7 @@ class _GameKenalSekitarkuScreenState
   void _nextQuestion() {
     setState(() {
       _showFeedback = false;
+      _audioPlayed = false; // Reset for next question
     });
 
     if (_index < _questions.length - 1) {
@@ -67,6 +114,45 @@ class _GameKenalSekitarkuScreenState
           ),
         ),
       );
+    }
+  }
+
+
+  void _playAudio() async {
+    final question = _questions[_index];
+    if (_audioPlayed) {
+      // Use TTS for replay
+      if (_ttsInitialized) {
+        await _flutterTts.speak(question.instruction);
+      }
+    } else {
+      // Try to play audio file first
+      if (question.audioPath != null) {
+        try {
+          await _audioPlayer.play(
+            AssetSource(question.audioPath!),
+          );
+          setState(() {
+            _audioPlayed = true;
+          });
+        } catch (_) {
+          // If audio fails, use TTS as fallback
+          if (_ttsInitialized) {
+            await _flutterTts.speak(question.instruction);
+            setState(() {
+              _audioPlayed = true; // Mark as played to enable TTS replay
+            });
+          }
+        }
+      } else {
+        // No audio file, use TTS directly
+        if (_ttsInitialized) {
+          await _flutterTts.speak(question.instruction);
+          setState(() {
+            _audioPlayed = true;
+          });
+        }
+      }
     }
   }
 
@@ -152,7 +238,7 @@ class _GameKenalSekitarkuScreenState
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: _playAudio,
                     icon: const Icon(Icons.volume_up),
                     label: const Text('Dengarkan Instruksi'),
                     style: ElevatedButton.styleFrom(

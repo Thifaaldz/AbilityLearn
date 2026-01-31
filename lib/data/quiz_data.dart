@@ -1,14 +1,14 @@
 import '../models/quiz_item.dart';
 
-/// All available items in the game
+/// Semua item yang tersedia di dalam game
 ///
-/// TO ADD YOUR FIGMA ASSETS:
-/// 1. Export images from Figma as PNG
-/// 2. Place them in: mobilegame/assets/images/items/
-/// 3. Update the imagePath below to match your file names
+/// CARA MENAMBAHKAN ASSET DARI FIGMA:
+/// 1. Ekspor gambar dari Figma dalam format PNG
+/// 2. Simpan ke: mobilegame/assets/images/items/
+/// 3. Perbarui imagePath di bawah agar sesuai dengan nama file
 ///
 class GameItems {
-  // Self-care items - UPDATE THESE PATHS TO MATCH YOUR FIGMA ASSETS
+  // Item perawatan diri - PERBARUI PATH INI SESUAI ASSET FIGMA ANDA
   static const toothbrush = SelectableItem(
     id: 'toothbrush',
     name: 'Sikat Gigi',
@@ -27,47 +27,47 @@ class GameItems {
   static const shampoo = SelectableItem(
     id: 'shampoo',
     name: 'Sampo',
-    imagePath: 'assets/images/items/sampo.png',
+    imagePath: 'assets/images/items/shampoo.png',
   );
   static const towel = SelectableItem(
     id: 'towel',
     name: 'Handuk',
-    imagePath: 'assets/images/items/handuk.png',
+    imagePath: 'assets/images/items/towel.png',
   );
   static const pillow = SelectableItem(
     id: 'pillow',
     name: 'Bantal',
-    imagePath: 'assets/images/items/bantal.png',
+    imagePath: 'assets/images/items/pillow.png',
   );
   static const blanket = SelectableItem(
     id: 'blanket',
     name: 'Selimut',
-    imagePath: 'assets/images/items/selimut.png',
+    imagePath: 'assets/images/items/blanket.png',
   );
   static const spoon = SelectableItem(
     id: 'spoon',
     name: 'Sendok',
-    imagePath: 'assets/images/items/sendok.png',
+    imagePath: 'assets/images/items/spoon.png',
   );
   static const plate = SelectableItem(
     id: 'plate',
     name: 'Piring',
-    imagePath: 'assets/images/items/piring.png',
+    imagePath: 'assets/images/items/plate.png',
   );
   static const shirt = SelectableItem(
     id: 'shirt',
     name: 'Baju',
-    imagePath: 'assets/images/items/baju.png',
+    imagePath: 'assets/images/items/shirt.png',
   );
   static const socks = SelectableItem(
     id: 'socks',
     name: 'Kaos Kaki',
-    imagePath: 'assets/images/items/kaos_kaki.png',
+    imagePath: 'assets/images/items/socks.png',
   );
   static const shoes = SelectableItem(
     id: 'shoes',
     name: 'Sepatu',
-    imagePath: 'assets/images/items/sepatu.png',
+    imagePath: 'assets/images/items/shoes.png',
   );
   static const water = SelectableItem(
     id: 'water',
@@ -115,7 +115,7 @@ class GameItems {
 }
 
 final List<QuizItem> quizData = [
-  // Sikat Gigi - Brushing Teeth
+  // Sikat Gigi
   const QuizItem(
     id: 'brush_teeth_1',
     instruction: 'Ayo sikat gigi!',
@@ -123,9 +123,10 @@ final List<QuizItem> quizData = [
     correctItems: ['toothbrush'],
     allItems: ['toothbrush', 'guling'],
     imagePath: 'assets/images/questions/SikatGigi.png',
+    audioPath: 'assets/audio/Modul1/brush_teeth.mp3',
   ),
 
-  // Cuci Tangan - Washing Hands
+  // Cuci Tangan
   const QuizItem(
     id: 'wash_hands_1',
     instruction: 'Ayo cuci tangan!',
@@ -133,5 +134,40 @@ final List<QuizItem> quizData = [
     correctItems: ['soap'],
     allItems: ['soap', 'permen'],
     imagePath: 'assets/images/questions/WashHands.png',
+    audioPath: 'assets/audio/Modul1/wash_hands.mp3',
+  ),
+
+  // Mandi
+  const QuizItem(
+    id: 'bath_1',
+    instruction: 'Ayo mandi!',
+    category: 'mandi',
+    correctItems: ['soap'],
+    allItems: ['soap', 'permen'],
+    imagePath: 'assets/images/questions/Bath.png',
+    audioPath: 'assets/audio/Modul1/bath.mp3',
+  ),
+
+  // Makan
+  const QuizItem(
+    id: 'eat_1',
+    instruction: 'Ayo makan!',
+    category: 'makan',
+    correctItems: ['spoon'],
+    allItems: ['spoon', 'toothbrush'],
+    imagePath: 'assets/images/questions/Eat.png',
+    audioPath: 'assets/audio/Modul1/eat.mp3',
+  ),
+
+  // Berpakaian
+  const QuizItem(
+    id: 'dress_1',
+    instruction: 'Ayo berpakaian!',
+    category: 'berpakaian',
+    correctItems: ['shirt'],
+    allItems: ['shirt', 'pillow'],
+    imagePath: 'assets/images/questions/Dress.png',
+    audioPath: 'assets/audio/Modul1/dress.mp3',
   ),
 ];
+  

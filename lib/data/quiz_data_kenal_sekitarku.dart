@@ -11,40 +11,40 @@ final Map<String, List<QuizKenalSekitarku>> quizKenalSekitarkuByRoom = {
       id: 'kt1',
       instruction: 'Pilih tempat untuk tidur!',
       room: 'Kamar Tidur',
-      correctItem: 'bed',
-      options: ['sofa', 'bed'], // benar kanan
+      correctItem: 'tempat_tidur',
+      options: ['sofa', 'tempat_tidur'], // benar kanan
     ),
 
     QuizKenalSekitarku(
       id: 'kt2',
       instruction: 'Pilih benda untuk menyelimuti tubuh!',
       room: 'Kamar Tidur',
-      correctItem: 'blanket',
-      options: ['blanket', 'plate'], // benar kiri
+      correctItem: 'selimut',
+      options: ['selimut', 'piring'], // benar kiri
     ),
 
     QuizKenalSekitarku(
       id: 'kt3',
       instruction: 'Pilih benda untuk alas kepala saat tidur!',
       room: 'Kamar Tidur',
-      correctItem: 'pillow',
-      options: ['spoon', 'pillow'], // benar kanan
+      correctItem: 'bantal',
+      options: ['sendok', 'bantal'], // benar kanan
     ),
 
     QuizKenalSekitarku(
       id: 'kt4',
       instruction: 'Pilih tempat untuk menyimpan pakaian!',
       room: 'Kamar Tidur',
-      correctItem: 'wardrobe',
-      options: ['wardrobe', 'rice_cooker'], // benar kiri
+      correctItem: 'lemari_pakaian',
+      options: ['lemari_pakaian', 'kompor_nasi'], // benar kiri
     ),
 
     QuizKenalSekitarku(
       id: 'kt5',
       instruction: 'Pilih benda untuk menerangi kamar!',
       room: 'Kamar Tidur',
-      correctItem: 'lamp',
-      options: ['towel', 'lamp'], // benar kanan
+      correctItem: 'lampu',
+      options: ['handuk', 'lampu'], // benar kanan
     ),
   ],
 
@@ -57,40 +57,40 @@ final Map<String, List<QuizKenalSekitarku>> quizKenalSekitarkuByRoom = {
       id: 'dp1',
       instruction: 'Pilih alat untuk memasak nasi!',
       room: 'Dapur',
-      correctItem: 'rice_cooker',
-      options: ['rice_cooker', 'lamp'], // benar kiri
+      correctItem: 'kompor_nasi',
+      options: ['kompor_nasi', 'lampu'], // benar kiri
     ),
 
     QuizKenalSekitarku(
       id: 'dp2',
       instruction: 'Pilih alat untuk makan!',
       room: 'Dapur',
-      correctItem: 'spoon',
-      options: ['pillow', 'spoon'], // benar kanan
+      correctItem: 'sendok',
+      options: ['bantal', 'sendok'], // benar kanan
     ),
 
     QuizKenalSekitarku(
       id: 'dp3',
       instruction: 'Pilih alat untuk menggoreng!',
       room: 'Dapur',
-      correctItem: 'pan',
-      options: ['pan', 'sofa'], // benar kiri
+      correctItem: 'wajan',
+      options: ['wajan', 'sofa'], // benar kiri
     ),
 
     QuizKenalSekitarku(
       id: 'dp4',
       instruction: 'Pilih tempat untuk menaruh makanan!',
       room: 'Dapur',
-      correctItem: 'plate',
-      options: ['soap', 'plate'], // benar kanan
+      correctItem: 'piring',
+      options: ['sabun', 'piring'], // benar kanan
     ),
 
     QuizKenalSekitarku(
       id: 'dp5',
       instruction: 'Pilih alat untuk memotong!',
       room: 'Dapur',
-      correctItem: 'knife',
-      options: ['knife', 'shampoo'], // benar kiri
+      correctItem: 'pisau',
+      options: ['pisau', 'sampo'], // benar kiri
     ),
   ],
 
@@ -103,40 +103,45 @@ final Map<String, List<QuizKenalSekitarku>> quizKenalSekitarkuByRoom = {
       id: 'km1',
       instruction: 'Pilih alat untuk mandi!',
       room: 'Kamar Mandi',
-      correctItem: 'shower',
-      options: ['sofa', 'shower'], // benar kanan
+      correctItem: 'pancuran',
+      options: ['sofa', 'pancuran'], // benar kanan
+      audioPath: 'audio/Modul2/km1.mp3',
     ),
 
     QuizKenalSekitarku(
       id: 'km2',
       instruction: 'Pilih alat untuk menggosok gigi!',
       room: 'Kamar Mandi',
-      correctItem: 'toothbrush',
-      options: ['toothbrush', 'knife'], // benar kiri
+      correctItem: 'sikat_gigi',
+      options: ['sikat_gigi', 'pisau'], // benar kiri
+      audioPath: 'audio/Modul2/km2.mp3',
     ),
 
     QuizKenalSekitarku(
       id: 'km3',
       instruction: 'Pilih benda untuk membersihkan badan!',
       room: 'Kamar Mandi',
-      correctItem: 'soap',
-      options: ['plate', 'soap'], // benar kanan
+      correctItem: 'sabun',
+      options: ['piring', 'sabun'], // benar kanan
+      audioPath: 'audio/Modul2/km3.mp3',
     ),
 
     QuizKenalSekitarku(
       id: 'km4',
       instruction: 'Pilih benda untuk mengeringkan badan!',
       room: 'Kamar Mandi',
-      correctItem: 'towel',
-      options: ['towel', 'lamp'], // benar kiri
+      correctItem: 'handuk',
+      options: ['handuk', 'lampu'], // benar kiri
+      audioPath: 'audio/Modul2/km4.mp3',
     ),
 
     QuizKenalSekitarku(
       id: 'km5',
       instruction: 'Pilih cairan untuk mencuci rambut!',
       room: 'Kamar Mandi',
-      correctItem: 'shampoo',
-      options: ['rice_cooker', 'shampoo'], // benar kanan
+      correctItem: 'sampo',
+      options: ['kompor_nasi', 'sampo'], // benar kanan
+      audioPath: 'audio/Modul2/km5.mp3',
     ),
   ],
 
@@ -150,15 +155,15 @@ final Map<String, List<QuizKenalSekitarku>> quizKenalSekitarkuByRoom = {
       instruction: 'Pilih tempat duduk untuk tamu!',
       room: 'Ruang Tamu',
       correctItem: 'sofa',
-      options: ['sofa', 'bed'], // benar kiri
+      options: ['sofa', 'tempat_tidur'], // benar kiri
     ),
 
     QuizKenalSekitarku(
       id: 'rt2',
       instruction: 'Pilih meja untuk menaruh minuman!',
       room: 'Ruang Tamu',
-      correctItem: 'table',
-      options: ['towel', 'table'], // benar kanan
+      correctItem: 'meja',
+      options: ['handuk', 'meja'], // benar kanan
     ),
 
     QuizKenalSekitarku(
@@ -166,15 +171,15 @@ final Map<String, List<QuizKenalSekitarku>> quizKenalSekitarkuByRoom = {
       instruction: 'Pilih benda empuk untuk duduk santai!',
       room: 'Ruang Tamu',
       correctItem: 'sofa',
-      options: ['pan', 'sofa'], // benar kanan
+      options: ['wajan', 'sofa'], // benar kanan
     ),
 
     QuizKenalSekitarku(
       id: 'rt4',
       instruction: 'Pilih tempat untuk menaruh barang!',
       room: 'Ruang Tamu',
-      correctItem: 'table',
-      options: ['table', 'shampoo'], // benar kiri
+      correctItem: 'meja',
+      options: ['meja', 'sampo'], // benar kiri
     ),
 
     QuizKenalSekitarku(
@@ -182,7 +187,7 @@ final Map<String, List<QuizKenalSekitarku>> quizKenalSekitarkuByRoom = {
       instruction: 'Pilih tempat duduk yang nyaman!',
       room: 'Ruang Tamu',
       correctItem: 'sofa',
-      options: ['wardrobe', 'sofa'], // benar kanan
+      options: ['lemari_pakaian', 'sofa'], // benar kanan
     ),
   ],
 };

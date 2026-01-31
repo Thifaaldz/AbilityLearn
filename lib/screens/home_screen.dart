@@ -3,6 +3,7 @@ import '../theme/app_theme.dart';
 import 'game_screen.dart';
 import 'kenal_sekitarku_screen.dart';
 import 'emosi_sosial_screen.dart';
+import '../modul4/features/home/screens/home_screen.dart' as Modul4HomeScreen;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -117,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                       title: 'Kenal Sekitarku',
                       subtitle: 'Eksplorasi lingkungan rumah',
                       color: const Color(0xFF6CCF8E),
-                      iconPath: 'assets/images/home/HomeIcon.png',
+                      iconPath: 'assets/images/home/home.png',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -154,7 +155,14 @@ class HomeScreen extends StatelessWidget {
                       subtitle: 'Belajar menyelesaikan tugas',
                       color: const Color(0xFF5A9BFF),
                       iconPath: 'assets/images/home/StarIcon.png',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const Modul4HomeScreen.HomeScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 20),
                   ],

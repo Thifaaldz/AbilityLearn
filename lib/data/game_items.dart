@@ -13,92 +13,92 @@ class GameItem {
 class KenalSekitarkuItems {
 
   static const pillow = GameItem(
-    id: 'pillow',
-    name: 'Pillow',
+    id: 'bantal',
+    name: 'Bantal',
     imagePath: 'assets/images/items/pillow.png',
   );
 
   static const blanket = GameItem(
-    id: 'blanket',
-    name: 'Blanket',
+    id: 'selimut',
+    name: 'Selimut',
     imagePath: 'assets/images/items/blanket.png',
   );
 
   static const bed = GameItem(
-    id: 'bed',
-    name: 'Bed',
+    id: 'tempat_tidur',
+    name: 'Tempat Tidur',
     imagePath: 'assets/images/items/bed.png',
   );
 
   static const wardrobe = GameItem(
-    id: 'wardrobe',
-    name: 'Wardrobe',
+    id: 'lemari_pakaian',
+    name: 'Lemari Pakaian',
     imagePath: 'assets/images/items/wardrobe.png',
   );
 
   static const lamp = GameItem(
-    id: 'lamp',
-    name: 'Lamp',
+    id: 'lampu',
+    name: 'Lampu',
     imagePath: 'assets/images/items/lamp.png',
   );
 
   static const spoon = GameItem(
-    id: 'spoon',
-    name: 'Spoon',
+    id: 'sendok',
+    name: 'Sendok',
     imagePath: 'assets/images/items/spoon.png',
   );
 
   static const pan = GameItem(
-    id: 'pan',
-    name: 'Pan',
+    id: 'wajan',
+    name: 'Wajan',
     imagePath: 'assets/images/items/pan.png',
   );
 
   static const plate = GameItem(
-    id: 'plate',
-    name: 'Plate',
+    id: 'piring',
+    name: 'Piring',
     imagePath: 'assets/images/items/plate.png',
   );
 
   static const knife = GameItem(
-    id: 'knife',
-    name: 'Knife',
+    id: 'pisau',
+    name: 'Pisau',
     imagePath: 'assets/images/items/knife.png',
   );
 
   static const riceCooker = GameItem(
-    id: 'rice_cooker',
-    name: 'Rice Cooker',
+    id: 'kompor_nasi',
+    name: 'Kompor Nasi',
     imagePath: 'assets/images/items/rice_cooker.png',
   );
 
   static const shower = GameItem(
-    id: 'shower',
-    name: 'Shower',
+    id: 'pancuran',
+    name: 'Pancuran',
     imagePath: 'assets/images/items/shower.png',
   );
 
   static const soap = GameItem(
-    id: 'soap',
-    name: 'Soap',
+    id: 'sabun',
+    name: 'Sabun',
     imagePath: 'assets/images/items/soap.png',
   );
 
   static const toothbrush = GameItem(
-    id: 'toothbrush',
-    name: 'Toothbrush',
+    id: 'sikat_gigi',
+    name: 'Sikat Gigi',
     imagePath: 'assets/images/items/toothbrush.png',
   );
 
   static const towel = GameItem(
-    id: 'towel',
-    name: 'Towel',
+    id: 'handuk',
+    name: 'Handuk',
     imagePath: 'assets/images/items/towel.png',
   );
 
   static const shampoo = GameItem(
-    id: 'shampoo',
-    name: 'Shampoo',
+    id: 'sampo',
+    name: 'Sampo',
     imagePath: 'assets/images/items/shampoo.png',
   );
 
@@ -109,8 +109,8 @@ class KenalSekitarkuItems {
   );
 
   static const table = GameItem(
-    id: 'table',
-    name: 'Table',
+    id: 'meja',
+    name: 'Meja',
     imagePath: 'assets/images/items/table.png',
   );
 

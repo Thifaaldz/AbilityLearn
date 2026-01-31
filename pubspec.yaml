@@ -28,14 +28,19 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  audioplayers: ^6.0.0
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  audioplayers: ^6.5.1
+  lottie: ^3.3.2
+  flutter_tts: ^4.2.5
+  provider: ^6.1.5+1
+  google_fonts: ^8.0.0
+  equatable: ^2.0.8
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -66,9 +71,10 @@ flutter:
     - assets/images/questions/
     - assets/images/home/
     - assets/images/icons/
-    - assets/audio/
     - assets/images/modul3/
+    - assets/images/
     - assets/audio/
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

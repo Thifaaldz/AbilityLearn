@@ -4,6 +4,7 @@ class QuizKenalSekitarku {
   final String room;
   final String correctItem;
   final List<String> options;
+  final String? audioPath;
 
   const QuizKenalSekitarku({
     required this.id,
@@ -11,5 +12,6 @@ class QuizKenalSekitarku {
     required this.room,
     required this.correctItem,
     required this.options,
+    this.audioPath,
   });
 }

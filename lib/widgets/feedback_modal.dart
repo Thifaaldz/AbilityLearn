@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import '../theme/app_theme.dart';
 
-class FeedbackModal extends StatelessWidget {
+class FeedbackModal extends StatefulWidget {
   final bool isCorrect;
   final String instruction;
   final String category;
@@ -15,7 +16,7 @@ class FeedbackModal extends StatelessWidget {
     required this.onContinue,
   });
 
-  String _getCorrectMessage() {
+  String _getCorrectMessage(String category) {
     switch (category.toLowerCase()) {
       case 'sikat gigi':
         return 'Ayo sikat gigi agar gigi menjadi lebih sehat!';
@@ -35,6 +36,60 @@ class FeedbackModal extends StatelessWidget {
   }
 
   @override
+  State<FeedbackModal> createState() => _FeedbackModalState();
+}
+
+class _FeedbackModalState extends State<FeedbackModal> {
+  final FlutterTts _flutterTts = FlutterTts();
+  bool _ttsInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initTts().then((_) {
+      // Auto-play TTS for feedback message
+      _speakFeedback();
+    });
+  }
+
+  @override
+  void dispose() {
+    _flutterTts.stop();
+    super.dispose();
+  }
+
+  Future<void> _initTts() async {
+    try {
+      // Try Indonesian first
+      var languages = await _flutterTts.getLanguages;
+      if (languages.contains("id-ID")) {
+        await _flutterTts.setLanguage("id-ID");
+      } else if (languages.contains("en-US")) {
+        await _flutterTts.setLanguage("en-US"); // Fallback to English
+      }
+      await _flutterTts.setSpeechRate(0.5);
+      await _flutterTts.setVolume(1.0);
+      await _flutterTts.setPitch(1.0);
+      _ttsInitialized = true;
+    } catch (e) {
+      print("TTS initialization error: $e");
+      _ttsInitialized = false;
+    }
+  }
+
+  void _speakFeedback() async {
+    if (_ttsInitialized) {
+      String message;
+      if (widget.isCorrect) {
+        message = widget.category.isNotEmpty ? widget._getCorrectMessage(widget.category) : 'Bagus sekali! Kamu hebat!';
+      } else {
+        message = 'coba lagi yaa';
+      }
+      await _flutterTts.speak(message);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black.withValues(alpha: 0.3),
@@ -43,7 +98,7 @@ class FeedbackModal extends StatelessWidget {
           margin: const EdgeInsets.all(32),
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: isCorrect ? AppTheme.correctGreen : AppTheme.wrongPink,
+            color: widget.isCorrect ? AppTheme.correctGreen : AppTheme.wrongPink,
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
@@ -58,7 +113,7 @@ class FeedbackModal extends StatelessWidget {
             children: [
               // Title
               Text(
-                isCorrect ? 'Jawaban Benar,' : 'Belum tepat,',
+                widget.isCorrect ? 'Jawaban Benar,' : 'Belum tepat,',
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -69,7 +124,7 @@ class FeedbackModal extends StatelessWidget {
               const SizedBox(height: 8),
               // Message
               Text(
-                isCorrect ? _getCorrectMessage() : 'coba lagi yaa',
+                widget.isCorrect ? widget._getCorrectMessage(widget.category) : 'coba lagi yaa',
                 style: const TextStyle(fontSize: 16, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
@@ -78,10 +133,10 @@ class FeedbackModal extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: onContinue,
+                  onPressed: widget.onContinue,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    foregroundColor: isCorrect
+                    foregroundColor: widget.isCorrect
                         ? AppTheme.correctGreen
                         : AppTheme.wrongRed,
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -92,10 +147,10 @@ class FeedbackModal extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (isCorrect) const Icon(Icons.check, size: 20),
+                      if (widget.isCorrect) const Icon(Icons.check, size: 20),
                       const SizedBox(width: 8),
                       Text(
-                        isCorrect ? 'Lanjutkan' : 'Yuk, coba lagi',
+                        widget.isCorrect ? 'Lanjutkan' : 'Yuk, coba lagi',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

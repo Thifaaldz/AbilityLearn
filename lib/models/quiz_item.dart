@@ -6,6 +6,7 @@ class QuizItem {
   final List<String> correctItems;
   final List<String> allItems;
   final String imagePath; // Path to main question image
+  final String? audioPath; // Path to audio file
 
   const QuizItem({
     required this.id,
@@ -14,6 +15,7 @@ class QuizItem {
     required this.correctItems,
     required this.allItems,
     required this.imagePath,
+    this.audioPath,
   });
 }
 

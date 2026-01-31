@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'result_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class EmosiSosialScreen extends StatefulWidget {
   const EmosiSosialScreen({super.key});
@@ -14,6 +15,9 @@ class _EmosiSosialScreenState extends State<EmosiSosialScreen> {
   late int totalStep;
   int stars = 0;
   final AudioPlayer _player = AudioPlayer();
+  final AudioPlayer _backgroundPlayer = AudioPlayer();
+  final FlutterTts _flutterTts = FlutterTts();
+  bool _ttsInitialized = false;
 
   Future<void> playSound(String path) async {
     await _player.stop(); // biar ga numpuk suaranya
@@ -21,9 +25,57 @@ class _EmosiSosialScreenState extends State<EmosiSosialScreen> {
   }
 
   @override
+  void dispose() {
+    _player.dispose();
+    _backgroundPlayer.dispose();
+    _flutterTts.stop();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     totalStep = questions.length;
+    _initTts().then((_) {
+      // Auto-play TTS for the instruction when screen loads
+      _speakInstruction();
+      _playBackgroundMusic();
+    });
+  }
+
+  Future<void> _initTts() async {
+    try {
+      // Try Indonesian first
+      var languages = await _flutterTts.getLanguages;
+      if (languages.contains("id-ID")) {
+        await _flutterTts.setLanguage("id-ID");
+      } else if (languages.contains("en-US")) {
+        await _flutterTts.setLanguage("en-US"); // Fallback to English
+      }
+      await _flutterTts.setSpeechRate(0.5);
+      await _flutterTts.setVolume(1.0);
+      await _flutterTts.setPitch(1.0);
+      _ttsInitialized = true;
+    } catch (e) {
+      print("TTS initialization error: $e");
+      _ttsInitialized = false;
+    }
+  }
+
+  void _speakInstruction() async {
+    if (_ttsInitialized) {
+      await _flutterTts.speak("Coba tebak, dia sedang merasa apa?");
+    }
+  }
+
+  void _playBackgroundMusic() async {
+    try {
+      await _backgroundPlayer.setVolume(0.3); // Lower volume for background music
+      await _backgroundPlayer.setReleaseMode(ReleaseMode.loop);
+      await _backgroundPlayer.play(AssetSource('audio/background music.mp3'));
+    } catch (e) {
+      print("Error playing background music: $e");
+    }
   }
 
   int currentIndex = 0;
@@ -526,7 +578,9 @@ class _EmosiSosialScreenState extends State<EmosiSosialScreen> {
                 height: 48,
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    await playSound("assets/audio/instruksi.mp3");
+                    if (_ttsInitialized) {
+                      await _flutterTts.speak("Coba tebak, dia sedang merasa apa?");
+                    }
                   },
 
                   icon: const Icon(Icons.volume_up_rounded),
