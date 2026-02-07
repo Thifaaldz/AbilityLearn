@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const SizedBox(height: 16),
 
-            // CATEGORY LIST
+            // CATEGORY LISTsa
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: 'Kemandirian Diri',
                       subtitle: 'Belajar merawat diri sendiri',
                       color: const Color(0xFFFFD93D),
-                      iconPath: 'assets/images/home/Brush.png',
+                      iconPath: 'assets/images/home/paintbrush.png',
                       onTap: () {
                         context.read<AudioProvider>().stopHomeBackgroundMusic();
                         Navigator.push(
@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: 'Kenal Sekitarku',
                       subtitle: 'Eksplorasi lingkungan rumah',
                       color: const Color(0xFF6CCF8E),
-                      iconPath: 'assets/images/home/home.png',
+                      iconPath: 'assets/images/home/homeicon.png',
                       onTap: () {
                         // Don't stop music here as it continues to KenalSekitarkuScreen
                         Navigator.push(
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: 'Emosi & Sosial',
                       subtitle: 'Kenali perasaan teman-teman',
                       color: const Color(0xFFFF6F6F),
-                      iconPath: 'assets/images/home/SmileIcon.png',
+                      iconPath: 'assets/images/home/smile.png',
                       onTap: () {
                         context.read<AudioProvider>().stopHomeBackgroundMusic();
                         Navigator.push(
@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: 'Tanggung Jawab',
                       subtitle: 'Belajar menyelesaikan tugas',
                       color: const Color(0xFF5A9BFF),
-                      iconPath: 'assets/images/home/StarIcon.png',
+                      iconPath: 'assets/images/home/star1.png',
                       onTap: () {
                         // Don't stop music here as it continues to Modul4HomeScreen
                         Navigator.push(
@@ -194,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // =========================
+  // =========================  
   // CATEGORY CARD WIDGET
   // =========================
   Widget _buildCategoryCard(

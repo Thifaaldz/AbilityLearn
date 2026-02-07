@@ -81,13 +81,13 @@ class KenalSekitarkuItems {
   static const soap = GameItem(
     id: 'sabun',
     name: 'Sabun',
-    imagePath: 'assets/images/items/soap.png',
+    imagePath: 'assets/images/items/Soap.png',
   );
 
   static const toothbrush = GameItem(
     id: 'sikat_gigi',
     name: 'Sikat Gigi',
-    imagePath: 'assets/images/items/toothbrush.png',
+    imagePath: 'assets/images/items/Toothbrush.png',
   );
 
   static const towel = GameItem(
