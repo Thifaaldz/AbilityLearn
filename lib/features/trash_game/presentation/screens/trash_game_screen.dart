@@ -31,7 +31,6 @@ class _TrashGameScreenState extends State<TrashGameScreen> {
   @override
   void initState() {
     super.initState();
-    super.initState();
     _initTts();
     _startIdleTimer();
   }
@@ -90,7 +89,7 @@ class _TrashGameScreenState extends State<TrashGameScreen> {
             progressLabel: "${provider.items.where((i) => i.isDropped).length}/${provider.items.length}",
             showHintGlow: _mistakeCount >= 2 || _isIdle,
             headerColor: Colors.lightBlue[50]!,
-            backgroundColor: const Color(0xFF87CEEB), // Sky Blue
+            backgroundColor: const Color(0xFFE3F2FD), // Light Blue (Same as Tidy Toys)
             onHint: provider.isGameFinished ? null : () {
                setState(() {
                   _mistakeCount = 0;
@@ -119,61 +118,41 @@ class _TrashGameScreenState extends State<TrashGameScreen> {
           ),
           child: Stack(
             children: [
-               // Ground (Green)
-               Positioned(
-                 bottom: 0,
-                 left: 0,
-                 right: 0,
-                 height: 150,
-                 child: Container(color: Colors.lightGreen),
-               ),
+               // Background (Full Image) removed
+
                
-               // Background Elements
-               Positioned(
-                 top: 20,
-                 left: 20,
-                 child: Image.asset('assets/images/cloud.png', width: 100),
-               ),
-               Positioned(
-                 top: 40,
-                 right: 40,
-                 child: Image.asset('assets/images/cloud.png', width: 80),
-               ),
-                
-               // Tree (shifted to left or right bottom)
-               Positioned(
-                 bottom: 100,
-                 left: -20,
-                 child: Image.asset('assets/images/tree.png', height: 200),
-               ),
-               
-              // Trash Items
-              if (!provider.isGameFinished)
-                Align(
-                  alignment: const Alignment(0, -0.4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: provider.items.map((item) {
-                      if (item.isDropped) {
-                        return const SizedBox(width: 80, height: 80); // Maintain space
-                      }
-                      return HintAnimator(
-                        active: _isHintActive,
-                        child: TrashDraggable(
-                          item: item,
-                          onDragStarted: _stopIdleTimer,
-                          onDragCompleted: _resetIdleTimer,
-                          onDragCanceled: () {
-                             _resetIdleTimer();
-                             setState(() {
-                               _mistakeCount++;
-                             });
-                          },
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
+              // Trash Items (Scattered)
+              ...provider.items.asMap().entries.map((entry) {
+                 final index = entry.key;
+                 final item = entry.value;
+
+                 if (item.isDropped) return const SizedBox.shrink();
+
+                 // Scatter positions (Top/Mid area)
+                 Alignment alignment;
+                 switch (index % 3) {
+                   case 0: alignment = const Alignment(-0.6, -0.5); break; // Top Left
+                   case 1: alignment = const Alignment(0.6, -0.3); break;  // Top Right
+                   case 2: alignment = const Alignment(0.0, -0.7); break;  // Top Center
+                   default: alignment = const Alignment(0.0, -0.5);
+                 }
+
+                 return Align(
+                   alignment: alignment,
+                   child: HintAnimator(
+                     active: _isHintActive,
+                     child: TrashDraggable(
+                       item: item,
+                       onDragStarted: _stopIdleTimer,
+                       onDragCompleted: _resetIdleTimer,
+                       onDragCanceled: () {
+                          _resetIdleTimer();
+                          setState(() => _mistakeCount++);
+                       },
+                     ),
+                   ),
+                 );
+              }),
 
               // Bin Target
               Align(
@@ -192,9 +171,19 @@ class _TrashGameScreenState extends State<TrashGameScreen> {
                  Builder(
                    builder: (context) {
                      final activeItem = provider.items.firstWhere((i) => !i.isDropped);
+                     final index = provider.items.indexOf(activeItem);
+                     
+                     Alignment startAlign;
+                     switch (index % 3) {
+                       case 0: startAlign = const Alignment(-0.6, -0.5); break;
+                       case 1: startAlign = const Alignment(0.6, -0.3); break;
+                       case 2: startAlign = const Alignment(0.0, -0.7); break;
+                       default: startAlign = const Alignment(0.0, -0.5);
+                     }
+
                      return GhostHinter(
                        active: _isHintActive,
-                       startAlignment: const Alignment(0, -0.4), 
+                       startAlignment: startAlign, 
                        endAlignment: Alignment.bottomCenter, 
                        child: IgnorePointer(
                          child: Transform.scale(

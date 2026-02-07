@@ -37,24 +37,11 @@ class TrashDraggable extends StatelessWidget {
   Widget _buildContent(BuildContext context, {bool isDragging = false}) {
     // Using Container with Icon as placeholder. 
     // In production, use Image.asset(item.imageAsset)
-    return Container(
-      width: 80,
-      height: 80,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        boxShadow: isDragging
-            ? [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha:0.2),
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                )
-              ]
-            : [],
-      ),
+    return SizedBox(
+      width: 100, // Adjusted size slightly larger for better visibility
+      height: 100,
       child: Center(
-      child: Image.asset(item.imageAsset, fit: BoxFit.contain),
+        child: Image.asset(item.imageAsset, fit: BoxFit.contain),
       ),
     );
   }

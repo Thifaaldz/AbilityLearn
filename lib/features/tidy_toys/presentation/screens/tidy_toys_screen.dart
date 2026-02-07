@@ -91,7 +91,7 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
                });
                _resetIdleTimer();
 
-               flutterTts.speak("Geser mainan ke dalam kotak kuning!");
+               flutterTts.speak("Geser mainan ke dalam kotak coklat!");
                setState(() => _isHintActive = true);
                Future.delayed(const Duration(seconds: 3), () {
                  if (mounted) setState(() => _isHintActive = false);
@@ -135,15 +135,15 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
                    // and `provider.toys` is now the full list, index stays stable!
                    // So we just need to NOT render the Draggable if isTidied.
                    
-                   // Scatter positions
-                   Alignment alignment;
-                   switch (index % 4) {
-                     case 0: alignment = const Alignment(-0.7, -0.7); break; // Top Left
-                     case 1: alignment = const Alignment(0.7, -0.7); break;  // Top Right
-                     case 2: alignment = const Alignment(-0.4, -0.2); break; // Mid Left
-                     case 3: alignment = const Alignment(0.4, -0.2); break;  // Mid Right
-                     default: alignment = const Alignment(0.0, -0.5);
-                   }
+                   // Scatter positions (Top half only)
+                 Alignment alignment;
+                 switch (index % 4) {
+                   case 0: alignment = const Alignment(-0.7, -0.8); break; // Top Left
+                   case 1: alignment = const Alignment(0.7, -0.8); break;  // Top Right
+                   case 2: alignment = const Alignment(-0.5, -0.3); break; // Mid Left (Upper)
+                   case 3: alignment = const Alignment(0.5, -0.3); break;  // Mid Right (Upper)
+                   default: alignment = const Alignment(0.0, -0.6); // Top Center
+                 }
 
                    if (toy.isTidied) return const SizedBox.shrink();
 
@@ -198,7 +198,7 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
                                    : [],
                             ),
                             child: Image.asset(
-                              'assets/images/toy_box.png',
+                              'assets/images/toy_box_new.jpg',
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -225,11 +225,11 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
                        final index = provider.toys.indexOf(activeToy);
                        Alignment startAlign;
                        switch (index % 4) {
-                         case 0: startAlign = const Alignment(-0.7, -0.7); break;
-                         case 1: startAlign = const Alignment(0.7, -0.7); break;
-                         case 2: startAlign = const Alignment(-0.4, -0.2); break;
-                         case 3: startAlign = const Alignment(0.4, -0.2); break;
-                         default: startAlign = const Alignment(0.0, -0.5);
+                         case 0: startAlign = const Alignment(-0.7, -0.8); break;
+                         case 1: startAlign = const Alignment(0.7, -0.8); break;
+                         case 2: startAlign = const Alignment(-0.5, -0.3); break;
+                         case 3: startAlign = const Alignment(0.5, -0.3); break;
+                         default: startAlign = const Alignment(0.0, -0.6);
                        }
 
                        return GhostHinter(

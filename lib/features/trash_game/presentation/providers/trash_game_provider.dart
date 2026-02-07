@@ -9,20 +9,20 @@ class TrashGameProvider extends ChangeNotifier {
     const TrashItem(
       id: '1',
       name: 'Apel',
-      imageAsset: 'assets/images/trash_apple.png', 
+      imageAsset: 'assets/images/trash_item_apple_new.png', 
       type: TrashType.organic,
     ),
     const TrashItem(
       id: '2',
       name: 'Kaleng',
-      imageAsset: 'assets/images/trash_can.png',
+      imageAsset: 'assets/images/trash_item_can_new.png',
       type: TrashType.inorganic,
     ),
     const TrashItem(
       id: '3',
-      name: 'Telur',
-      imageAsset: 'assets/images/trash_egg.png',
-      type: TrashType.organic,
+      name: 'Botol',
+      imageAsset: 'assets/images/trash_item_bottle_new.png',
+      type: TrashType.inorganic,
     ),
   ];
 

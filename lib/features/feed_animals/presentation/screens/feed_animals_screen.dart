@@ -26,12 +26,12 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
   int _mistakeCount = 0;
   Timer? _idleTimer;
   bool _isIdle = false;
+  FeedStage? _lastStage;
 
   @override
   void initState() {
     super.initState();
     flutterTts = FlutterTts();
-    flutterTts.setLanguage("id-ID");
     flutterTts.setLanguage("id-ID");
     flutterTts.speak("Geser makanan atau minuman ke mangkuk yang benar!");
     _startIdleTimer();
@@ -67,24 +67,39 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
       child: Consumer<FeedAnimalsProvider>(
         builder: (context, provider, _) {
             
+           if (!provider.isGameFinished && _lastStage != provider.currentStage) {
+              final current = provider.currentStage;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                 if (_lastStage != current) {
+                    _lastStage = current;
+                    String text = current == FeedStage.thirsty 
+                       ? "Kucing sedang haus, beri minum susu!" 
+                       : "Kucing sedang lapar, beri makan!";
+                    flutterTts.speak(text);
+                 }
+              });
+           }
+
            if (provider.isGameFinished && !_showCelebration) {
              WidgetsBinding.instance.addPostFrameCallback((_) {
                setState(() {
                  _showCelebration = true;
                });
-               flutterTts.speak("Hebat! Hewan peliharaanmu sudah kenyang.");
+               flutterTts.speak("Hebat! Kucingmu sudah kenyang dan senang.");
              });
            }
 
           return GameLayout(
             title: "Tanggung Jawab",
             subTitle: "Misi Memberi Makan Hewan",
-            instruction: "Geser Makanan Ke dalam Mangkuk!",
+            instruction: provider.currentStage == FeedStage.thirsty 
+                ? "Kucing sedang haus, beri minum susu!" 
+                : "Kucing sedang lapar, beri makan!",
             progress: provider.progress,
-            progressLabel: "${provider.items.where((i) => i.isFed).length}/${provider.items.length}",
+            progressLabel: provider.currentStage == FeedStage.thirsty ? "1/2" : (provider.currentStage == FeedStage.hungry ? "2/2" : "2/2"),
             showHintGlow: _mistakeCount >= 2 || _isIdle,
             headerColor: Colors.white,
-            backgroundColor: const Color(0xFFC9F3FF), // Light Sky
+            backgroundColor: const Color(0xFFE3F2FD), // Light Blue
             onHint: provider.isGameFinished ? null : () {
                setState(() {
                   _mistakeCount = 0;
@@ -92,7 +107,11 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
                });
                _resetIdleTimer();
 
-               flutterTts.speak("Geser makanan ke mangkuk merah, dan susu ke mangkuk biru!");
+               String hintText = provider.currentStage == FeedStage.thirsty
+                   ? "Geser kotak susu ke mangkuk orange!"
+                   : "Geser makanan kucing ke mangkuk merah!";
+
+               flutterTts.speak(hintText);
                setState(() => _isHintActive = true);
                Future.delayed(const Duration(seconds: 3), () {
                  if (mounted) setState(() => _isHintActive = false);
@@ -106,50 +125,40 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
                    if (provider.isGameFinished) {
                        Navigator.pop(context);
                    } else {
-                       flutterTts.speak("Kucingnya masih lapar nih!");
+                       flutterTts.speak("Kucingnya masih butuh perhatianmu!");
                    }
                 },
               ),
             ),
             child: Stack(
               children: [
-                // Ground
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 200,
-                  child: Container(color: const Color(0xFF8D6E63)), // Brownish ground/floor
+                // Cat Character
+                Align(
+                  alignment: const Alignment(0, -0.6), 
+                  child: Image.asset('assets/images/cat_new.png', height: 230),
                 ),
 
-                // Cat Character (Center)
+                // Bowls (Targets) - Enlarged and Moved Up for Spacing
                 Align(
-                  alignment: const Alignment(0, -0.2),
-                  child: Image.asset('assets/images/cat.png', height: 250),
-                ),
-
-                // Bowls (Targets)
-                Align(
-                   alignment: const Alignment(-0.6, 0.4),
+                   alignment: const Alignment(-0.6, 0.1), // Adjusted Y from 0.4 to 0.1
                    child: _buildBowlTarget(
                      context, 
                      provider, 
                      FoodType.drink, 
-                     'assets/images/bowl_blue.png'
+                     'assets/images/bowl_milk_new.png'
                    ),
                 ),
                 Align(
-                   alignment: const Alignment(0.6, 0.4),
+                   alignment: const Alignment(0.6, 0.1), // Adjusted Y from 0.4 to 0.1
                    child: _buildBowlTarget(
                      context, 
                      provider, 
                      FoodType.food, 
-                     'assets/images/bowl_red.png'
+                     'assets/images/bowl_food_new.png'
                    ),
                 ),
 
-                // Food Items (Sources)
-                // In a real row below the cat or free floating
+                // Food Items (Sources) - Enlarged
                 if (!provider.isGameFinished)
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -159,9 +168,9 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: provider.items.map((item) {
                           if (item.isFed) {
-                            return const SizedBox(width: 100, height: 120); // Maintain space
+                            return const SizedBox(width: 120, height: 140); // Maintain space
                           }
-                          return HintAnimator( // Added HintAnimator
+                          return HintAnimator(
                             active: _isHintActive,
                             child: Draggable<FoodItem>(
                               data: item,
@@ -184,38 +193,41 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
                 // Ghost Hints
                 if (provider.items.any((i) => !i.isFed)) ...[
                    Builder(builder: (context) {
-                     // We want to show hints for EACH type if available
                      final hints = <Widget>[];
                      
-                     // Find first available drink
-                     try {
-                        final drink = provider.items.firstWhere((i) => i.type == FoodType.drink && !i.isFed);
-                        hints.add(
-                          GhostHinter(
-                             active: _isHintActive,
-                             startAlignment: Alignment.bottomCenter,
-                             endAlignment: const Alignment(-0.6, 0.4), // Blue Bowl
-                             child: IgnorePointer(
-                               child: Hero(tag: 'ghost_${drink.id}', child: _buildFoodIcon(drink)),
-                             ),
-                          )
-                        );
-                     } catch (_) {}
+                     if (provider.currentStage == FeedStage.thirsty) {
+                       try {
+                          final drink = provider.items.firstWhere((i) => i.type == FoodType.drink && !i.isFed);
+                          hints.add(
+                            GhostHinter(
+                               active: _isHintActive,
+                               startAlignment: Alignment.bottomCenter,
+                               // Match new bowl position
+                               endAlignment: const Alignment(-0.6, 0.1), 
+                               child: IgnorePointer(
+                                 child: Hero(tag: 'ghost_${drink.id}', child: _buildFoodIcon(drink)),
+                               ),
+                            )
+                          );
+                       } catch (_) {}
+                     }
 
-                     // Find first available food
-                     try {
-                        final food = provider.items.firstWhere((i) => i.type == FoodType.food && !i.isFed);
-                        hints.add(
-                          GhostHinter(
-                             active: _isHintActive,
-                             startAlignment: Alignment.bottomCenter,
-                             endAlignment: const Alignment(0.6, 0.4), // Red Bowl
-                             child: IgnorePointer(
-                               child: Hero(tag: 'ghost_${food.id}', child: _buildFoodIcon(food)),
-                             ),
-                          )
-                        );
-                     } catch (_) {}
+                     if (provider.currentStage == FeedStage.hungry) {
+                       try {
+                          final food = provider.items.firstWhere((i) => i.type == FoodType.food && !i.isFed);
+                          hints.add(
+                            GhostHinter(
+                               active: _isHintActive,
+                               startAlignment: Alignment.bottomCenter,
+                               // Match new bowl position
+                               endAlignment: const Alignment(0.6, 0.1),
+                               child: IgnorePointer(
+                                 child: Hero(tag: 'ghost_${food.id}', child: _buildFoodIcon(food)),
+                               ),
+                            )
+                          );
+                       } catch (_) {}
+                     }
 
                      return Stack(children: hints);
                    }),
@@ -226,7 +238,7 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
                      child: Container(
                        padding: const EdgeInsets.all(20),
                        color: Colors.white.withOpacity(0.9),
-                       child: const Text("Yey! Hewan kenyang!", style: TextStyle(fontSize: 30, color: Colors.green, fontWeight: FontWeight.bold)),
+                       child: const Text("Yey! Kucing kenyang!", style: TextStyle(fontSize: 30, color: Colors.green, fontWeight: FontWeight.bold)),
                      ),
                    ),
 
@@ -247,34 +259,32 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
   }
 
   Widget _buildBowlTarget(BuildContext context, FeedAnimalsProvider provider, FoodType type, String imageAsset) {
+    bool isTargetActive = false;
+    if (provider.currentStage == FeedStage.thirsty && type == FoodType.drink) isTargetActive = true;
+    if (provider.currentStage == FeedStage.hungry && type == FoodType.food) isTargetActive = true;
+
     return DragTarget<FoodItem>(
-      onWillAccept: (data) => data?.type == type,
+      onWillAccept: (data) => data?.type == type && isTargetActive,
       onAccept: (data) {
         provider.handleDrop(data, type);
       },
       builder: (context, candidates, rejects) {
-        final isHovered = candidates.isNotEmpty;
+        final isHovered = candidates.isNotEmpty && isTargetActive;
         return HintAnimator(
-           active: _isHintActive,
+           active: _isHintActive && isTargetActive,
            child: AnimatedScale(
              duration: const Duration(milliseconds: 300),
              scale: isHovered ? 1.2 : 1.0,
              child: Container(
-               width: 140,
-               height: 100,
-               decoration: BoxDecoration(
-                 shape: BoxShape.circle,
-                 boxShadow: isHovered
-                     ? [
-                         BoxShadow(
-                           color: Colors.yellowAccent.withOpacity(0.8),
-                           blurRadius: 20,
-                           spreadRadius: 5,
-                         )
-                       ]
-                     : [],
+               width: 170, // Resized larger
+               height: 130, 
+               // Display raw image (transparency handles the shape)
+               child: Image.asset(
+                  imageAsset, 
+                  fit: BoxFit.contain,
+                  width: 170,
+                  height: 130,
                ),
-               child: Image.asset(imageAsset, fit: BoxFit.contain),
              ),
            ),
         );
@@ -284,8 +294,8 @@ class _FeedAnimalsScreenState extends State<FeedAnimalsScreen> {
 
   Widget _buildFoodIcon(FoodItem item) {
      return SizedBox(
-         width: 100, 
-         height: 120,
+         width: 120, // Resized larger
+         height: 140,
          child: Image.asset(item.imageAsset, fit: BoxFit.contain),
      );
   }

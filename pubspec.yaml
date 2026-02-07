@@ -66,6 +66,19 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/home_icon_tidy.jpg
+    - assets/images/home_icon_trash.jpg
+    - assets/images/home_icon_feed.jpg
+    - assets/images/toy_box_new.jpg
+    - assets/images/trash_bin_new.png
+    - assets/images/trash_item_can_new.png
+    - assets/images/trash_item_apple_new.png
+    - assets/images/trash_item_bottle_new.png
+    - assets/images/cat_new.png
+    - assets/images/cat_milk_new.png
+    - assets/images/cat_food_new.png
+    - assets/images/bowl_milk_new.png
+    - assets/images/bowl_food_new.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
