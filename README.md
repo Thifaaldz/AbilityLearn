@@ -1,174 +1,281 @@
-# Aku Bisa Merawat Diriku
+# Narasi Perancangan Game Edukasi Adaptif
 
-An interactive educational mobile application designed for children to learn essential self-care skills, emotional intelligence, and social awareness through engaging games and quizzes.
+Berbasis Aplikasi Flutter untuk Anak Berkebutuhan Khusus
 
-## Description
+## 1. Gambaran Umum Sistem Game
 
-"Aku Bisa Merawat Diriku" (I Can Take Care of Myself) is a Flutter-based educational app aimed at helping young children develop independence and life skills. The app features various modules that teach children about personal hygiene, daily routines, emotional recognition, and social interactions through interactive games, quizzes, and audio-visual feedback.
+Sebagai bentuk inovasi dalam kegiatan pengabdian kepada masyarakat, tim merancang sebuah aplikasi game edukasi adaptif berbasis mobile yang ditujukan bagi anak-anak berkebutuhan khusus. Aplikasi ini dikembangkan menggunakan Flutter, sehingga dapat dijalankan pada berbagai perangkat Android yang umum digunakan di lingkungan yayasan.
 
-## Features
+Game ini dirancang bukan sebagai sarana hiburan semata, melainkan sebagai media pembelajaran interaktif dan alat bantu stimulasi kemandirian yang dapat digunakan secara berkelanjutan oleh anak-anak dengan pendampingan pengasuh atau guru. Seluruh aktivitas dalam game disesuaikan dengan kemampuan kognitif, motorik, dan emosional anak berkebutuhan khusus, dengan pendekatan visual sederhana, instruksi suara, serta interaksi satu sentuhan.
 
-### Core Modules
-- **Self-Care Module**: Interactive lessons on daily hygiene routines including bathing, eating, dressing, drinking water, and hair care
-- **Emotional & Social Skills**: Activities to help children recognize and understand emotions and social interactions
-- **Knowing Surroundings**: Quizzes and games to familiarize children with their environment and common objects
-- **Mini-Games**:
-  - Feed Animals: Interactive game teaching responsibility through pet care simulation
-  - Tidy Toys: Organizational skills game where children learn to sort and store toys
+Sistem game ini bersifat offline, sehingga tidak membutuhkan koneksi internet, dan seluruh data perkembangan anak disimpan secara lokal untuk menjaga keamanan serta kemudahan penggunaan di lingkungan yayasan.
 
-### Technical Features
-- **Audio Feedback**: Sound effects for correct/incorrect answers and background music
-- **Text-to-Speech**: Voice narration for accessibility and learning reinforcement
-- **Animations**: Lottie animations for engaging visual feedback
-- **Responsive Design**: Optimized for mobile devices with clean, child-friendly UI
-- **Multi-language Support**: Designed with Indonesian language content
+## 2. Tujuan Umum Pengembangan Game
 
-### Educational Benefits
-- Promotes independence and self-care skills
-- Enhances emotional intelligence
-- Develops problem-solving abilities
-- Encourages interactive learning through play
-- Provides immediate feedback for better learning outcomes
+Tujuan utama dari pengembangan game edukasi adaptif ini adalah untuk mendukung peningkatan kemandirian anak berkebutuhan khusus dalam aktivitas kehidupan sehari-hari, serta membantu pengasuh dalam memberikan stimulasi edukatif yang konsisten dan terarah.
 
-## Screenshots
+Secara khusus, game ini bertujuan untuk:
 
-*(Add screenshots here when available)*
+- Membantu anak mengenali dan mempraktikkan aktivitas dasar secara bertahap.
+- Melatih kemampuan fokus, respons, dan koordinasi motorik sederhana.
+- Menumbuhkan rasa percaya diri anak melalui pengalaman berhasil menyelesaikan aktivitas.
+- Menjadi media pendamping yang mudah digunakan oleh pengasuh dan pendidik.
 
-## Installation
+## 3. Arsitektur Sistem Game
 
-### Prerequisites
+Sistem game dibagi menjadi beberapa modul permainan (mini games) yang masing-masing memiliki tujuan pembelajaran yang berbeda. Setiap modul dapat dimainkan secara mandiri dan tidak bersifat kompetitif, sehingga anak dapat belajar sesuai dengan ritme dan kemampuan masing-masing.
+
+Struktur sistem meliputi:
+
+- Menu utama: menampilkan pilihan modul game dengan ikon visual.
+- Mode anak: antarmuka sederhana untuk bermain.
+- Mode pendamping: untuk pengasuh memilih tingkat kesulitan dan memantau aktivitas.
+- Penyimpanan progres: mencatat aktivitas yang telah diselesaikan anak.
+
+## 4. Narasi Detail Setiap Modul Game
+
+### Modul 1: Game Kemandirian Diri
+
+**"Aku Bisa Merawat Diriku"**
+
+Deskripsi Game
+
+Modul ini dirancang untuk melatih anak dalam memahami dan mengenal aktivitas perawatan diri sehari-hari. Anak diajak untuk melakukan simulasi aktivitas sederhana melalui animasi interaktif yang menyerupai kondisi nyata.
+
+Contoh aktivitas dalam modul ini meliputi:
+
+- Menyikat gigi
+- Mencuci tangan
+- Memakai baju dan sepatu
+
+Setiap aktivitas disajikan dalam bentuk langkah-langkah sederhana yang harus dilakukan secara berurutan. Anak hanya perlu melakukan satu jenis interaksi, seperti mengetuk atau menyeret objek ke tempat yang sesuai.
+
+Tujuan Modul
+
+- Melatih pemahaman urutan aktivitas harian.
+- Membantu anak mengenali alat-alat perawatan diri.
+- Menanamkan kebiasaan hidup bersih dan mandiri secara bertahap.
+
+Manfaat Modul
+
+- Anak menjadi lebih familiar dengan rutinitas sehari-hari.
+- Meningkatkan kemampuan motorik halus.
+- Membantu pengasuh dalam memperkenalkan aktivitas mandiri dengan cara yang menyenangkan dan tidak memaksa.
+
+### Modul 2: Game Pengenalan Lingkungan
+
+**"Kenal Sekitarku"**
+
+Deskripsi Game
+
+Modul ini bertujuan untuk membantu anak mengenali lingkungan sekitar yang sering mereka temui, seperti kamar tidur, kamar mandi, dan dapur. Game menampilkan ilustrasi ruangan dan anak diminta untuk memilih atau mencocokkan benda yang sesuai dengan ruangan tersebut.
+
+Contoh permainan:
+
+- Memilih benda yang terdapat di kamar mandi.
+- Menempatkan benda ke lokasi yang tepat.
+
+Tujuan Modul
+
+- Melatih kemampuan mengenali lingkungan.
+- Membantu anak memahami fungsi benda sehari-hari.
+- Mengembangkan kemampuan klasifikasi sederhana.
+
+Manfaat Modul
+
+- Anak lebih mudah beradaptasi dengan lingkungan sekitar.
+- Mengurangi kebingungan anak saat berada di ruang berbeda.
+- Meningkatkan pemahaman konteks ruang dalam kehidupan sehari-hari.
+
+### Modul 3: Game Emosi dan Sosial
+
+**"Aku Mengerti Perasaan"**
+
+Deskripsi Game
+
+Modul ini berfokus pada pengenalan emosi dasar, yang merupakan tantangan utama bagi sebagian anak berkebutuhan khusus. Anak diperlihatkan ekspresi wajah karakter kartun dan diminta untuk mencocokkan dengan emosi yang sesuai.
+
+Emosi yang diperkenalkan antara lain:
+
+- Senang
+- Sedih
+- Marah
+- Takut
+
+Instruksi diberikan melalui suara untuk memudahkan anak memahami konteks tanpa harus membaca teks.
+
+Tujuan Modul
+
+- Membantu anak mengenali dan memahami emosi dasar.
+- Melatih kesadaran emosional dan empati.
+- Mendukung perkembangan sosial anak.
+
+Manfaat Modul
+
+- Anak lebih mampu mengekspresikan perasaan.
+- Mengurangi perilaku frustrasi akibat ketidakmampuan mengenali emosi.
+- Membantu pengasuh dalam membangun komunikasi emosional dengan anak.
+
+### Modul 4: Game Tanggung Jawab Sederhana
+
+**"Aku Anak Hebat"**
+
+Deskripsi Game
+
+Modul ini mengajarkan anak tentang tanggung jawab ringan melalui aktivitas simulatif, seperti merapikan mainan, membuang sampah pada tempatnya, atau memberi makan hewan.
+
+Game dirancang tanpa batas waktu dan tanpa hukuman jika anak melakukan kesalahan, sehingga anak merasa aman untuk mencoba.
+
+Tujuan Modul
+
+- Menanamkan rasa tanggung jawab sejak dini.
+- Melatih anak mengikuti instruksi sederhana.
+- Mendorong kemandirian dalam aktivitas sosial ringan.
+
+Manfaat Modul
+
+- Anak terbiasa membantu aktivitas sederhana di lingkungan yayasan.
+- Meningkatkan rasa percaya diri dan peran sosial anak.
+- Membantu membangun kebiasaan positif secara berulang.
+
+## 5. Manfaat Sistem Game secara Keseluruhan
+
+Penggunaan game edukasi adaptif ini memberikan manfaat sebagai berikut:
+
+- Memberikan media pembelajaran yang ramah bagi anak berkebutuhan khusus.
+- Menjadi alat bantu pendamping bagi pengasuh dan pendidik.
+- Meningkatkan kualitas stimulasi edukatif di lingkungan yayasan.
+- Mendorong pemanfaatan teknologi sederhana untuk kegiatan sosial.
+
+## 6. Keberlanjutan Program
+
+Aplikasi ini dirancang agar dapat terus digunakan setelah kegiatan pengabdian selesai. Pengasuh yayasan dapat menggunakan game ini sebagai bagian dari aktivitas harian anak, serta menyesuaikan tingkat kesulitan sesuai perkembangan masing-masing anak.
+
+## Instalasi dan Penggunaan
+
+### Prasyarat
 - Flutter SDK (^3.10.7)
 - Dart SDK
-- Android Studio or VS Code with Flutter extensions
-- Android/iOS device or emulator
+- Android Studio atau VS Code dengan ekstensi Flutter
+- Perangkat Android/iOS atau emulator
 
-### Setup Instructions
+### Instruksi Setup
 
-1. **Clone the repository**
+1. **Clone repositori**
    ```bash
    git clone <repository-url>
    cd ability_learn
    ```
 
-2. **Install dependencies**
+2. **Install dependensi**
    ```bash
    flutter pub get
    ```
 
-3. **Run the app**
+3. **Jalankan aplikasi**
    ```bash
    flutter run
    ```
 
-### Build Instructions
+### Instruksi Build
 
-**For Android APK:**
+**Untuk Android APK:**
 ```bash
 flutter build apk --release
 ```
 
-**For iOS (on macOS):**
+**Untuk iOS (di macOS):**
 ```bash
 flutter build ios --release
 ```
 
-## Usage
-
-1. **Launch the App**: Open the app on your device
-2. **Splash Screen**: Initial loading screen with app branding
-3. **Home Screen**: Navigate through different modules using the menu cards
-4. **Interactive Learning**: Engage with quizzes, games, and activities
-5. **Feedback System**: Receive audio and visual feedback for answers
-6. **Progress Tracking**: View results and track learning progress
-
-## Project Structure
+## Struktur Proyek
 
 ```
 ability_learn/
-├── .gitignore                    # Git ignore rules
-├── .metadata                     # Flutter project metadata
-├── analysis_options.yaml         # Dart analysis configuration
-├── pubspec.yaml                  # Flutter project dependencies and configuration
-├── pubspec.lock                  # Lockfile for dependencies
-├── README.md                     # Project documentation
-├── TODO.md                       # Development tasks and notes
-├── android/                      # Android platform-specific code
+├── .gitignore                    # Aturan git ignore
+├── .metadata                     # Metadata proyek Flutter
+├── analysis_options.yaml         # Konfigurasi analisis Dart
+├── pubspec.yaml                  # Dependensi dan konfigurasi proyek Flutter
+├── pubspec.lock                  # Lockfile untuk dependensi
+├── README.md                     # Dokumentasi proyek
+├── TODO.md                       # Catatan tugas pengembangan
+├── android/                      # Kode spesifik platform Android
 │   ├── .gitignore
-│   ├── build.gradle.kts          # Android build configuration
-│   ├── gradle.properties         # Gradle properties
-│   ├── settings.gradle.kts       # Gradle settings
+│   ├── build.gradle.kts          # Konfigurasi build Android
+│   ├── gradle.properties         # Properti Gradle
+│   ├── settings.gradle.kts       # Pengaturan Gradle
 │   ├── app/
-│   │   ├── build.gradle.kts      # App-level build configuration
-│   │   └── src/                  # Android source code
-│   ├── build/                    # Build outputs
-│   ├── gradle/                   # Gradle wrapper
+│   │   ├── build.gradle.kts      # Konfigurasi build aplikasi
+│   │   └── src/                  # Kode sumber Android
+│   ├── build/                    # Output build
+│   ├── gradle/                   # Wrapper Gradle
 │   └── gradle.properties
-├── assets/                       # Static assets
-│   ├── audio/                    # Audio files
+├── assets/                       # Aset statis
+│   ├── audio/                    # File audio
 │   │   ├── background music.mp3
+│   │   ├── backsound main.mp3
 │   │   ├── correct.mp3
 │   │   ├── result.mp3
 │   │   └── wrong.mp3
-│   └── images/                   # Image assets
-│       ├── banner_aku_anak_hebat.png
-│       ├── bowl_blue.png
-│       ├── bowl_red.png
-│       ├── btn_buang_sampah.png
-│       ├── btn_memberi_makan.png
-│       ├── btn_rapikan_mainan.png
-│       ├── cat_food.png
-│       ├── cat.png
-│       ├── cloud.png
-│       ├── milk.png
-│       ├── toy_ball.png
-│       ├── toy_box.png
-│       ├── toy_car.png
-│       ├── toy_duck.png
-│       ├── toy_gamepad.png
-│       ├── trash_apple.png
-│       ├── trash_bin_character.png
-│       ├── trash_can.png
-│       ├── trash_egg.png
-│       ├── tree.png
-│       ├── home/                 # Home screen images
-│       ├── icons/                # Icon assets
-│       ├── items/                # Item images (clothing, etc.)
-│       ├── modul3/               # Module 3 specific images
-│       └── questions/            # Quiz question images
-├── build/                        # Flutter build outputs
-├── ios/                          # iOS platform-specific code
+│   └── images/                   # Aset gambar
+│       ├── home/                 # Gambar layar utama
+│       ├── icons/                # Aset ikon
+│       ├── items/                # Gambar item (pakaian, dll.)
+│       ├── modul3/               # Gambar spesifik modul 3
+│       ├── modul4/               # Gambar spesifik modul 4
+│       └── questions/            # Gambar pertanyaan kuis
+├── build/                        # Output build Flutter
+├── ios/                          # Kode spesifik platform iOS
 │   ├── .gitignore
-│   ├── Flutter/                  # Flutter iOS integration
-│   ├── Runner/                   # iOS app runner
-│   ├── Runner.xcodeproj/         # Xcode project files
-│   ├── Runner.xcworkspace/       # Xcode workspace
-│   └── RunnerTests/              # iOS unit tests
-├── lib/                          # Main Flutter application code
-│   ├── main.dart                 # App entry point
-│   ├── data/                     # Static data and configurations
-│   │   ├── game_items.dart       # Game item data
-│   │   ├── quiz_data.dart        # Quiz questions and data
+│   ├── Flutter/                  # Integrasi Flutter iOS
+│   ├── Runner/                   # Runner aplikasi iOS
+│   ├── Runner.xcodeproj/         # File proyek Xcode
+│   ├── Runner.xcworkspace/       # Workspace Xcode
+│   └── RunnerTests/              # Unit test iOS
+├── lib/                          # Kode aplikasi Flutter utama
+│   ├── main.dart                 # Titik masuk aplikasi
+│   ├── data/                     # Data statis dan konfigurasi
+│   │   ├── game_items.dart       # Data item game
+│   │   ├── quiz_data.dart        # Data pertanyaan kuis
 │   │   └── quiz_data_kenal_sekitarku.dart
-│   ├── models/                   # Data models
-│   │   ├── quiz_item.dart        # Quiz item model
+│   ├── models/                   # Model data
+│   │   ├── quiz_item.dart        # Model item kuis
 │   │   ├── quiz_item_kenal_sekitarku.dart
-│   │   └── selectable_item.dart  # Selectable item model
-│   ├── modul4/                   # Module 4 features
-│   │   ├── core/                 # Core utilities for module 4
-│   │   ├── features/             # Feature-specific code
-│   │   │   ├── feed_animals/     # Feed animals mini-game
+│   │   └── selectable_item.dart  # Model item yang dapat dipilih
+│   ├── modul4/                   # Fitur modul 4
+│   │   ├── core/                 # Utilitas inti untuk modul 4
+│   │   ├── features/             # Kode fitur spesifik
+│   │   │   ├── feed_animals/     # Mini-game beri makan hewan
 │   │   │   │   └── presentation/
+│   │   │   │       ├── providers/
+│   │   │   │       │   └── feed_animals_provider.dart
 │   │   │   │       └── screens/
 │   │   │   │           └── feed_animals_screen.dart
-│   │   │   ├── home/             # Home feature for module 4
+│   │   │   ├── home/             # Fitur utama modul 4
+│   │   │   │   ├── screens/
+│   │   │   │   │   └── home_screen.dart
 │   │   │   │   └── widgets/
 │   │   │   │       └── home_menu_card.dart
-│   │   │   └── tidy_toys/        # Tidy toys mini-game
+│   │   │   ├── tidy_toys/        # Mini-game rapikan mainan
+│   │   │   │   └── presentation/
+│   │   │   │       ├── providers/
+│   │   │   │       │   └── tidy_toys_provider.dart
+│   │   │   │       └── screens/
+│   │   │   │           └── tidy_toys_screen.dart
+│   │   │   └── trash_game/       # Mini-game buang sampah
 │   │   │       └── presentation/
-│   │   │           └── screens/
-│   │   │               └── tidy_toys_screen.dart
-│   │   └── utils/                # Utility functions for module 4
-│   ├── screens/                  # Main application screens
+│   │   │           ├── providers/
+│   │   │           │   └── trash_game_provider.dart
+│   │   │           ├── screens/
+│   │   │           │   └── trash_game_screen.dart
+│   │   │           └── widgets/
+│   │   │               ├── trash_bin_target.dart
+│   │   │               └── trash_draggable.dart
+│   │   └── utils/                # Fungsi utilitas untuk modul 4
+│   ├── providers/                # Provider state management
+│   │   └── audio_provider.dart   # Provider untuk audio
+│   ├── screens/                  # Layar utama aplikasi
 │   │   ├── emosi_sosial_screen.dart
 │   │   ├── game_kenal_sekitarku_screen.dart
 │   │   ├── game_screen.dart
@@ -176,75 +283,42 @@ ability_learn/
 │   │   ├── kenal_sekitarku_screen.dart
 │   │   ├── result_screen.dart
 │   │   └── splash_screen.dart
-│   ├── theme/                    # App theming
-│   │   └── app_theme.dart        # Application theme configuration
-│   └── widgets/                  # Reusable UI components
-│       ├── feedback_modal.dart   # Feedback modal widget
-│       └── item_card.dart        # Item card widget
-├── linux/                        # Linux platform-specific code
+│   ├── theme/                    # Tema aplikasi
+│   │   └── app_theme.dart        # Konfigurasi tema aplikasi
+│   └── widgets/                  # Komponen UI yang dapat digunakan ulang
+│       ├── feedback_modal.dart   # Widget modal feedback
+│       ├── item_card.dart        # Widget kartu item
+│       └── kenal_sekitarku_room_button.dart
+├── linux/                        # Kode spesifik platform Linux
 │   ├── .gitignore
 │   ├── CMakeLists.txt
 │   ├── flutter/
 │   └── runner/
-├── macos/                        # macOS platform-specific code
+├── macos/                        # Kode spesifik platform macOS
 │   ├── .gitignore
 │   ├── Flutter/
 │   ├── Runner/
 │   ├── Runner.xcodeproj/
 │   ├── Runner.xcworkspace/
 │   └── RunnerTests/
-├── test/                         # Unit and widget tests
-│   └── widget_test.dart          # Basic widget test
-├── web/                          # Web platform-specific code
+├── test/                         # Unit dan widget test
+│   └── widget_test.dart          # Test widget dasar
+├── web/                          # Kode spesifik platform Web
 │   ├── favicon.png
 │   ├── index.html
 │   ├── manifest.json
 │   └── icons/
-└── windows/                      # Windows platform-specific code
+└── windows/                      # Kode spesifik platform Windows
     ├── .gitignore
     ├── CMakeLists.txt
     ├── flutter/
     └── runner/
 ```
 
-## Dependencies
+## Perancang
 
-### Core Dependencies
-- **Flutter**: UI framework
-- **audioplayers**: Audio playback for sound effects
-- **lottie**: Vector animations
-- **flutter_tts**: Text-to-speech functionality
-- **provider**: State management
-- **google_fonts**: Custom typography
-- **equatable**: Object comparison
-- **gap**: Spacing utilities
+Proyek ini dikembangkan oleh tim berikut:
 
-### Development Dependencies
-- **flutter_lints**: Code linting
-- **flutter_launcher_icons**: App icon generation
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Built with Flutter framework
-- Designed for educational purposes
-- Audio assets and visual content created for child-friendly learning experience
-
-## Support
-
-For support or questions, please contact the development team or create an issue in the repository.
-
----
-
-**Note**: This app is designed for children and should be used under adult supervision.
+- [Marciano](https://github.com/marciano-o)
+- [Iblamenear](https://github.com/iblamenear)
+- [Acaaa14](https://github.com/acaaa14)
