@@ -31,7 +31,7 @@ class TrashBinTarget extends StatelessWidget {
                     : [],
               ),
               child: Image.asset(
-                'assets/images/trash_bin_character.png',
+                'assets/images/modul4/trash_bin_new.png',
                 fit: BoxFit.contain,
               ),
             ),

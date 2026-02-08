@@ -10,6 +10,7 @@ import '../../../../core/widgets/game_layout.dart';
 import '../providers/trash_game_provider.dart';
 import '../widgets/trash_bin_target.dart';
 import '../widgets/trash_draggable.dart';
+import 'package:ability_learn/providers/audio_provider.dart';
 
 import '../../../../core/widgets/hint_animator.dart';
 import '../../../../core/widgets/ghost_hinter.dart';
@@ -28,14 +29,19 @@ class _TrashGameScreenState extends State<TrashGameScreen> {
   int _mistakeCount = 0;
   Timer? _idleTimer;
   bool _isIdle = false;
+
   final AudioPlayer _backgroundPlayer = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
-    super.initState();
     _initTts();
+    _playBackgroundMusic();
     _startIdleTimer();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioProvider>().stopHomeBackgroundMusic();
+    });
   }
 
   @override
@@ -43,6 +49,17 @@ class _TrashGameScreenState extends State<TrashGameScreen> {
     _idleTimer?.cancel();
     _backgroundPlayer.dispose();
     super.dispose();
+  }
+
+  void _playBackgroundMusic() async {
+    try {
+      await _backgroundPlayer.setReleaseMode(ReleaseMode.loop);
+      await _backgroundPlayer.play(
+        AssetSource('audio/background music.mp3'),
+      );
+    } catch (e) {
+      debugPrint("Error playing background music: $e");
+    }
   }
 
   void _startIdleTimer() {
@@ -74,164 +91,171 @@ class _TrashGameScreenState extends State<TrashGameScreen> {
       create: (_) => TrashGameProvider(),
       child: Consumer<TrashGameProvider>(
         builder: (context, provider, child) {
-        
-        // Check win condition to show celebration
-        if (provider.isGameFinished && !_showCelebration) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            setState(() {
-              _showCelebration = true;
+
+          if (provider.isGameFinished && !_showCelebration) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {
+                _showCelebration = true;
+              });
+              flutterTts.speak("Hebat! Kamu berhasil membuang semua sampah.");
             });
-            flutterTts.speak("Hebat! Kamu berhasil membuang semua sampah.");
-          });
-        }
+          }
 
           return GameLayout(
             title: "Tanggung Jawab",
             subTitle: "Misi Buang Sampah",
             instruction: "Ayo masukkan semua sampah ke dalam kotak sampah!",
-            progress: provider.isGameFinished ? 1.0 : (provider.items.where((i) => i.isDropped).length / provider.items.length),
-            progressLabel: "${provider.items.where((i) => i.isDropped).length}/${provider.items.length}",
+            progress: provider.isGameFinished
+                ? 1.0
+                : (provider.items.where((i) => i.isDropped).length /
+                    provider.items.length),
+            progressLabel:
+                "${provider.items.where((i) => i.isDropped).length}/${provider.items.length}",
             showHintGlow: _mistakeCount >= 2 || _isIdle,
             headerColor: Colors.lightBlue[50]!,
-            backgroundColor: const Color(0xFF87CEEB), // Sky Blue
-            onHint: provider.isGameFinished ? null : () {
-               setState(() {
-                  _mistakeCount = 0;
-                  _isIdle = false;
-               });
-               _resetIdleTimer();
-               
-               flutterTts.speak("Geser sampah ke dalam tong sampah!");
-               setState(() => _isHintActive = true);
-               Future.delayed(const Duration(seconds: 3), () {
-                 if (mounted) setState(() => _isHintActive = false);
-               });
-            },
+            backgroundColor: const Color(0xFFE3F2FD),
+            onHint: provider.isGameFinished
+                ? null
+                : () {
+                    setState(() {
+                      _mistakeCount = 0;
+                      _isIdle = false;
+                    });
+                    _resetIdleTimer();
+
+                    flutterTts.speak("Geser sampah ke dalam tong sampah!");
+                    setState(() => _isHintActive = true);
+                    Future.delayed(const Duration(seconds: 3), () {
+                      if (mounted) setState(() => _isHintActive = false);
+                    });
+                  },
             bottomAction: Center(
-            child: AppButton(
-              label: "Lanjut",
-              color: AppColors.pastelGreen,
-              onPressed: () {
-                if (provider.isGameFinished) {
-                  Navigator.of(context).pop();
-                } else {
-                  flutterTts.speak("Selesaikan dulu ya!");
-                }
-              },
-            ),
-          ),
-          child: Stack(
-            children: [
-               // Ground (Green)
-               Positioned(
-                 bottom: 0,
-                 left: 0,
-                 right: 0,
-                 height: 150,
-                 child: Container(color: Colors.lightGreen),
-               ),
-               
-               // Background Elements
-               Positioned(
-                 top: 20,
-                 left: 20,
-                 child: Image.asset('assets/images/cloud.png', width: 100),
-               ),
-               Positioned(
-                 top: 40,
-                 right: 40,
-                 child: Image.asset('assets/images/cloud.png', width: 80),
-               ),
-                
-               // Tree (shifted to left or right bottom)
-               Positioned(
-                 bottom: 100,
-                 left: -20,
-                 child: Image.asset('assets/images/tree.png', height: 200),
-               ),
-               
-              // Trash Items
-              if (!provider.isGameFinished)
-                Align(
-                  alignment: const Alignment(0, -0.4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: provider.items.map((item) {
-                      if (item.isDropped) {
-                        return const SizedBox(width: 80, height: 80); // Maintain space
-                      }
-                      return HintAnimator(
-                        active: _isHintActive,
-                        child: TrashDraggable(
-                          item: item,
-                          onDragStarted: _stopIdleTimer,
-                          onDragCompleted: _resetIdleTimer,
-                          onDragCanceled: () {
-                             _resetIdleTimer();
-                             setState(() {
-                               _mistakeCount++;
-                             });
-                          },
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-
-              // Bin Target
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: HintAnimator(
-                    active: _isHintActive,
-                    child: const TrashBinTarget(),
-                  ),
-                ),
+              child: AppButton(
+                label: "Lanjut",
+                color: AppColors.pastelGreen,
+                onPressed: () {
+                  if (provider.isGameFinished) {
+                    Navigator.of(context).pop();
+                  } else {
+                    flutterTts.speak("Selesaikan dulu ya!");
+                  }
+                },
               ),
+            ),
+            child: Stack(
+              children: [
 
-               // Ghost Hint (Moved to top)
-               if (provider.items.any((i) => !i.isDropped))
-                 Builder(
-                   builder: (context) {
-                     final activeItem = provider.items.firstWhere((i) => !i.isDropped);
-                     return GhostHinter(
-                       active: _isHintActive,
-                       startAlignment: const Alignment(0, -0.4), 
-                       endAlignment: Alignment.bottomCenter, 
-                       child: IgnorePointer(
-                         child: Transform.scale(
-                           scale: 0.8, 
-                           child: TrashDraggable(item: activeItem)
-                         ),
-                       ),
-                     );
-                   }
-                 ),
+                ...provider.items.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
 
-                // Success Message
-                if (provider.isGameFinished)
-                   Center(
-                     child: Container(
-                       padding: const EdgeInsets.all(20),
-                       color: Colors.white.withOpacity(0.9),
-                       child: const Text("Yey! Bersih sekali!", style: TextStyle(fontSize: 30, color: Colors.green, fontWeight: FontWeight.bold)),
-                     ),
-                   ),
+                  if (item.isDropped) return const SizedBox.shrink();
 
-              if (_showCelebration)
+                  Alignment alignment;
+                  switch (index % 3) {
+                    case 0:
+                      alignment = const Alignment(-0.6, -0.5);
+                      break;
+                    case 1:
+                      alignment = const Alignment(0.6, -0.3);
+                      break;
+                    case 2:
+                      alignment = const Alignment(0.0, -0.7);
+                      break;
+                    default:
+                      alignment = const Alignment(0.0, -0.5);
+                  }
+
+                  return Align(
+                    alignment: alignment,
+                    child: HintAnimator(
+                      active: _isHintActive,
+                      child: TrashDraggable(
+                        item: item,
+                        onDragStarted: _stopIdleTimer,
+                        onDragCompleted: _resetIdleTimer,
+                        onDragCanceled: () {
+                          _resetIdleTimer();
+                          setState(() => _mistakeCount++);
+                        },
+                      ),
+                    ),
+                  );
+                }),
+
                 Align(
-                  alignment: Alignment.center,
-                  child: LottieBuilder.network(
-                    'https://assets10.lottiefiles.com/packages/lf20_u4yrau.json',
-                    repeat: false,
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: HintAnimator(
+                      active: _isHintActive,
+                      child: const TrashBinTarget(),
+                    ),
                   ),
                 ),
-            ],
-          ),
-        );
-      },
-    ),
+
+                if (provider.items.any((i) => !i.isDropped))
+                  Builder(builder: (context) {
+                    final activeItem =
+                        provider.items.firstWhere((i) => !i.isDropped);
+                    final index = provider.items.indexOf(activeItem);
+
+                    Alignment startAlign;
+                    switch (index % 3) {
+                      case 0:
+                        startAlign = const Alignment(-0.6, -0.5);
+                        break;
+                      case 1:
+                        startAlign = const Alignment(0.6, -0.3);
+                        break;
+                      case 2:
+                        startAlign = const Alignment(0.0, -0.7);
+                        break;
+                      default:
+                        startAlign = const Alignment(0.0, -0.5);
+                    }
+
+                    return GhostHinter(
+                      active: _isHintActive,
+                      startAlignment: startAlign,
+                      endAlignment: Alignment.bottomCenter,
+                      child: IgnorePointer(
+                        child: Transform.scale(
+                          scale: 0.8,
+                          child: TrashDraggable(item: activeItem),
+                        ),
+                      ),
+                    );
+                  }),
+
+                if (provider.isGameFinished)
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      color: Colors.white.withOpacity(0.9),
+                      child: const Text(
+                        "Yey! Bersih sekali!",
+                        style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+
+                if (_showCelebration)
+                  Align(
+                    alignment: Alignment.center,
+                    child: LottieBuilder.network(
+                      'https://assets10.lottiefiles.com/packages/lf20_u4yrau.json',
+                      repeat: false,
+                    ),
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

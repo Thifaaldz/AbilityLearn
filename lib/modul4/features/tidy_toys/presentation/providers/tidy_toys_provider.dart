@@ -6,10 +6,10 @@ class TidyToysProvider extends ChangeNotifier {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   List<ToyItem> _toys = [
-    ToyItem(id: '1', name: 'Robot', imageAsset: 'assets/images/toy_gamepad.png'), // Using gamepad as robot/tech toy
-    ToyItem(id: '2', name: 'Bebek', imageAsset: 'assets/images/toy_duck.png'),
-    ToyItem(id: '3', name: 'Mobil', imageAsset: 'assets/images/toy_car.png'),
-    ToyItem(id: '4', name: 'Bola', imageAsset: 'assets/images/toy_ball.png'),
+    ToyItem(id: '1', name: 'Robot', imageAsset: 'assets/images/modul4/toy_gamepad.png'), // Using gamepad as robot/tech toy
+    ToyItem(id: '2', name: 'Bebek', imageAsset: 'assets/images/modul4/toy_duck.png'),
+    ToyItem(id: '3', name: 'Mobil', imageAsset: 'assets/images/modul4/toy_car.png'),
+    ToyItem(id: '4', name: 'Bola', imageAsset: 'assets/images/modul4/toy_ball.png'),
   ];
 
   List<ToyItem> get toys => _toys;

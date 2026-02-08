@@ -36,7 +36,10 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
     flutterTts = FlutterTts();
     flutterTts.setLanguage("id-ID");
     flutterTts.speak("Ayo masukkan mainan ke kotak!");
+
+    _playBackgroundMusic(); // play background
     _startIdleTimer();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AudioProvider>().stopHomeBackgroundMusic();
     });
@@ -47,6 +50,17 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
     _idleTimer?.cancel();
     _backgroundPlayer.dispose();
     super.dispose();
+  }
+
+  void _playBackgroundMusic() async {
+    try {
+      await _backgroundPlayer.setReleaseMode(ReleaseMode.loop);
+      await _backgroundPlayer.play(
+        AssetSource('audio/background music.mp3'),
+      );
+    } catch (e) {
+      print("Error playing background music: $e");
+    }
   }
 
   void _startIdleTimer() {
@@ -66,71 +80,63 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
     if (mounted) setState(() => _isIdle = false);
   }
 
-  void _playBackgroundMusic() async {
-    try {
-      await _backgroundPlayer.setReleaseMode(ReleaseMode.loop);
-      await _backgroundPlayer.play(AssetSource('audio/background music.mp3'));
-    } catch (e) {
-      print("Error playing background music: $e");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => TidyToysProvider(),
       child: Consumer<TidyToysProvider>(
         builder: (context, provider, _) {
-          
-           if (provider.isGameFinished && !_showCelebration) {
-             WidgetsBinding.instance.addPostFrameCallback((_) {
-               setState(() {
-                 _showCelebration = true;
-               });
-               flutterTts.speak("Hebat! Kamu berhasil merapikan semua mainan.");
-             });
-           }
+
+          if (provider.isGameFinished && !_showCelebration) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {
+                _showCelebration = true;
+              });
+              flutterTts.speak("Hebat! Kamu berhasil merapikan semua mainan.");
+            });
+          }
 
           return GameLayout(
             title: "Tanggung Jawab",
             subTitle: "Misi Rapikan Mainan",
             instruction: "Ayo masukkan mainan ke kotak!",
             progress: provider.progress,
-            progressLabel: "${provider.toys.where((t) => t.isTidied).length}/${provider.toys.length}",
+            progressLabel:
+                "${provider.toys.where((t) => t.isTidied).length}/${provider.toys.length}",
             showHintGlow: _mistakeCount >= 2 || _isIdle,
             headerColor: Colors.white,
-            backgroundColor: const Color(0xFFE3F2FD), // Light Blue
-            onHint: provider.isGameFinished ? null : () {
-               setState(() {
-                  _mistakeCount = 0;
-                  _isIdle = false;
-               });
-               _resetIdleTimer();
+            backgroundColor: const Color(0xFFE3F2FD),
+            onHint: provider.isGameFinished
+                ? null
+                : () {
+                    setState(() {
+                      _mistakeCount = 0;
+                      _isIdle = false;
+                    });
+                    _resetIdleTimer();
 
-               flutterTts.speak("Geser mainan ke dalam kotak kuning!");
-               setState(() => _isHintActive = true);
-               Future.delayed(const Duration(seconds: 3), () {
-                 if (mounted) setState(() => _isHintActive = false);
-               });
-            },
+                    flutterTts.speak("Geser mainan ke dalam kotak coklat!");
+                    setState(() => _isHintActive = true);
+                    Future.delayed(const Duration(seconds: 3), () {
+                      if (mounted) setState(() => _isHintActive = false);
+                    });
+                  },
             bottomAction: Center(
               child: AppButton(
                 label: "Lanjutkan",
                 color: AppColors.pastelBlue,
                 onPressed: () {
-                    if (provider.isGameFinished) {
-                        Navigator.pop(context); // Or go to next level
-                    } else {
-                        flutterTts.speak("Mainannya belum rapi nih!");
-                    }
+                  if (provider.isGameFinished) {
+                    Navigator.pop(context);
+                  } else {
+                    flutterTts.speak("Mainannya belum rapi nih!");
+                  }
                 },
               ),
             ),
             child: Stack(
               children: [
 
-
-                // Celebration Animation
                 if (_showCelebration)
                   Align(
                     alignment: Alignment.center,
@@ -140,50 +146,52 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
                     ),
                   ),
 
-                // Toys scattered
                 ...provider.toys.asMap().entries.map((entry) {
-                   final index = entry.key;
-                   final toy = entry.value;
-                   
-                   if (toy.isTidied) return const SizedBox.shrink(); // Stack doesn't care about space, so shrink is fine as position is absolute anyway?
-                   // No, actually if we return SizedBox.shrink() inside a Stack, it just disappears.
-                   // The user wants positions to stay SAME. Since we depend on `index` for position, 
-                   // and `provider.toys` is now the full list, index stays stable!
-                   // So we just need to NOT render the Draggable if isTidied.
-                   
-                   // Scatter positions
-                   Alignment alignment;
-                   switch (index % 4) {
-                     case 0: alignment = const Alignment(-0.7, -0.7); break; // Top Left
-                     case 1: alignment = const Alignment(0.7, -0.7); break;  // Top Right
-                     case 2: alignment = const Alignment(-0.4, -0.2); break; // Mid Left
-                     case 3: alignment = const Alignment(0.4, -0.2); break;  // Mid Right
-                     default: alignment = const Alignment(0.0, -0.5);
-                   }
+                  final index = entry.key;
+                  final toy = entry.value;
 
-                   if (toy.isTidied) return const SizedBox.shrink();
+                  if (toy.isTidied) return const SizedBox.shrink();
 
-                   return Align(
-                     alignment: alignment,
-                     child: HintAnimator( // Added HintAnimator
-                       active: _isHintActive,
-                       child: Draggable<ToyItem>(
-                         data: toy,
-                         onDragStarted: _stopIdleTimer,
-                         onDragCompleted: _resetIdleTimer,
-                         onDraggableCanceled: (_, __) {
-                           _resetIdleTimer();
-                           setState(() => _mistakeCount++);
-                         },
-                         feedback: Transform.scale(scale: 1.2, child: _buildToyIcon(toy)),
-                         childWhenDragging: Opacity(opacity: 0.5, child: _buildToyIcon(toy)),
-                         child: _buildToyIcon(toy),
-                       ),
-                     ),
-                   );
+                  Alignment alignment;
+                  switch (index % 4) {
+                    case 0:
+                      alignment = const Alignment(-0.7, -0.8);
+                      break;
+                    case 1:
+                      alignment = const Alignment(0.7, -0.8);
+                      break;
+                    case 2:
+                      alignment = const Alignment(-0.5, -0.3);
+                      break;
+                    case 3:
+                      alignment = const Alignment(0.5, -0.3);
+                      break;
+                    default:
+                      alignment = const Alignment(0.0, -0.6);
+                  }
+
+                  return Align(
+                    alignment: alignment,
+                    child: HintAnimator(
+                      active: _isHintActive,
+                      child: Draggable<ToyItem>(
+                        data: toy,
+                        onDragStarted: _stopIdleTimer,
+                        onDragCompleted: _resetIdleTimer,
+                        onDraggableCanceled: (_, __) {
+                          _resetIdleTimer();
+                          setState(() => _mistakeCount++);
+                        },
+                        feedback:
+                            Transform.scale(scale: 1.2, child: _buildToyIcon(toy)),
+                        childWhenDragging:
+                            Opacity(opacity: 0.5, child: _buildToyIcon(toy)),
+                        child: _buildToyIcon(toy),
+                      ),
+                    ),
+                  );
                 }),
 
-                // Toy Box Target
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: DragTarget<ToyItem>(
@@ -202,19 +210,19 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
                             width: 280,
                             height: 220,
                             decoration: BoxDecoration(
-                               borderRadius: BorderRadius.circular(20),
-                               boxShadow: isHovered
-                                   ? [
-                                       BoxShadow(
-                                         color: Colors.amber.withOpacity(0.8),
-                                         blurRadius: 30,
-                                         spreadRadius: 5,
-                                       )
-                                     ]
-                                   : [],
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: isHovered
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.amber.withOpacity(0.8),
+                                        blurRadius: 30,
+                                        spreadRadius: 5,
+                                      )
+                                    ]
+                                  : [],
                             ),
                             child: Image.asset(
-                              'assets/images/toy_box.png',
+                              'assets/images/modul4/toy_box_new.jpg',
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -223,45 +231,6 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
                     },
                   ),
                 ),
-                
-                 if (provider.isGameFinished)
-                   Center(
-                     child: Container(
-                       padding: const EdgeInsets.all(20),
-                       color: Colors.white.withOpacity(0.9),
-                       child: const Text("Yey! Rapi sekali!", style: TextStyle(fontSize: 30, color: Colors.green, fontWeight: FontWeight.bold)),
-                     ),
-                   ),
-                
-                // Ghost Hint
-                if (provider.toys.any((t) => !t.isTidied))
-                   Builder(
-                     builder: (context) {
-                       final activeToy = provider.toys.firstWhere((t) => !t.isTidied);
-                       final index = provider.toys.indexOf(activeToy);
-                       Alignment startAlign;
-                       switch (index % 4) {
-                         case 0: startAlign = const Alignment(-0.7, -0.7); break;
-                         case 1: startAlign = const Alignment(0.7, -0.7); break;
-                         case 2: startAlign = const Alignment(-0.4, -0.2); break;
-                         case 3: startAlign = const Alignment(0.4, -0.2); break;
-                         default: startAlign = const Alignment(0.0, -0.5);
-                       }
-
-                       return GhostHinter(
-                         active: _isHintActive,
-                         startAlignment: startAlign,
-                         endAlignment: Alignment.bottomCenter, // Box position
-                         child: IgnorePointer(
-                           child: Transform.scale(
-                             scale: 0.8,
-                             child: Image.asset(activeToy.imageAsset, width: 80),
-                           ),
-                         ),
-                       );
-                     }
-                   ),
-
               ],
             ),
           );
@@ -269,12 +238,12 @@ class _TidyToysScreenState extends State<TidyToysScreen> {
       ),
     );
   }
-  
+
   Widget _buildToyIcon(ToyItem toy) {
-      return SizedBox(
-         width: 100,
-         height: 100,
-         child: Image.asset(toy.imageAsset, fit: BoxFit.contain),
-      );
+    return SizedBox(
+      width: 100,
+      height: 100,
+      child: Image.asset(toy.imageAsset, fit: BoxFit.contain),
+    );
   }
 }

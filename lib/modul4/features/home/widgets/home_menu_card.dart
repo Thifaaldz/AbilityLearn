@@ -3,12 +3,20 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 
 class HomeMenuCard extends StatefulWidget {
-  final String imagePath;
+  final String title;
+  final String subtitle;
+  final Color color;
+  final IconData icon;
+  final String? imagePath; // Optional illustration
   final VoidCallback onTap;
 
   const HomeMenuCard({
     super.key,
-    required this.imagePath,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+    required this.icon,
+    this.imagePath,
     required this.onTap,
   });
 
@@ -54,23 +62,76 @@ class _HomeMenuCardState extends State<HomeMenuCard> with SingleTickerProviderSt
            );
         },
         child: Container(
+          height: 160,
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            color: widget.color,
+            borderRadius: BorderRadius.circular(24),
             boxShadow: [
                BoxShadow(
-                 color: Colors.black.withOpacity(0.1),
+                 color: widget.color.withOpacity(0.4),
                  blurRadius: 10,
-                 offset: const Offset(0, 5),
+                 offset: const Offset(0, 6),
                )
             ]
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.asset(
-               widget.imagePath,
-               height: 120, 
-               fit: BoxFit.contain,
-            ),
+          child: Stack(
+            children: [
+              // Icon top left
+              Align(
+                alignment: Alignment.topLeft,
+                child: Icon(widget.icon, color: Colors.white, size: 32),
+              ),
+
+              // Texts bottom left
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: const TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      widget.subtitle,
+                      style: const TextStyle(
+                         fontFamily: 'Nunito',
+                         fontSize: 14,
+                         color: Colors.white70,
+                         fontStyle: FontStyle.italic
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Illustration right
+              if (widget.imagePath != null)
+                Positioned(
+                  right: -10,
+                  bottom: -10,
+                  top: 10,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Image.asset(
+                       widget.imagePath!,
+                       fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),

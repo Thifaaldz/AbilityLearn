@@ -74,6 +74,7 @@ flutter:
     - assets/images/modul3/
     - assets/images/
     - assets/audio/
+    - assets/images/modul4/
     
 
   # An image asset can refer to one or more resolution-specific "variants", see
